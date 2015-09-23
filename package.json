@@ -1,0 +1,17 @@
+{
+  "name": "WorkerPal",
+  "version": "1.0.0",
+  "description": "WorkerPal",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "algorithmer",
+  "license": "ISC",
+  "dependencies": {
+    "vfs": "^0.1.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}

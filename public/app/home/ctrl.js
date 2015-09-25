@@ -2,6 +2,8 @@
  * Created by Alex on 9/23/2015.
  */
 (function(window){
+    'use strict';
+
     window.app.config(['$stateProvider', function($stateProvider){
         $stateProvider.state('home', {
             url: '/',
@@ -9,7 +11,8 @@
             controller: 'HomeController'
         });
     }])
-    .controller('HomeController', ['$scope', function($scope){
-
+    .controller('HomeController', ['$scope', 'users', function($scope, users){
+        
+        
     }]);
 })(window);

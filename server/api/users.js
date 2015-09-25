@@ -6,7 +6,10 @@ module.exports = function UsersApi(app, baseUrl) {
     var relUrl = baseUrl + '/users';
 
     app.get(relUrl, function (req, res) {
-        res.end('users  ssds');
+        res.send([{
+            name: 'alex'            
+        },{
+            name: 'roci'            
+        }]);
     });
-
 };

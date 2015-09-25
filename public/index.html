@@ -8,10 +8,18 @@
 <body>
     <section ui-view></section>
 
-    <script src="vendor/angular/angular.js"></script>
+    <script src="vendor/angular/angular.min.js"></script>
     <script src="vendor/angular-route/angular-route.min.js"></script>
     <script src="vendor/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="vendor/angular-resource/angular-resource.min.js"></script>
+    
     <script src="app/app.js"></script>
+    
+    <script src="app/services/users.js"></script>
+
     <script src="app/home/ctrl.js"></script>
+    <script src="app/login/ctrl.js"></script>
+    
+    <script src="app/private/home/ctrl.js"></script>
 </body>
 </html>

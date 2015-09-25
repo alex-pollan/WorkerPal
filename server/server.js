@@ -8,6 +8,9 @@ var app = express();
 app.use(express.static('public'));
 app.use('/vendor', express.static('bower_components'));
 
+var passport = require('passport');
+require('./passportlocal')(passport);
+
 require('./api/users')(app, '/api');
 
 var server = app.listen(8080, function () {

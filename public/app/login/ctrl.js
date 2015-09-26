@@ -6,14 +6,19 @@
 
     window.app.config(['$stateProvider', function($stateProvider) {
         $stateProvider.state('login', {
-            url: '/',
+            url: '/login',
             templateUrl: 'app/login/view.html',
             controller: 'LoginController'
         });
     }])
-    .controller('LoginController', ['$scope', function($scope){
+    .controller('LoginController', ['$scope', '$state', 'authentication', function($scope, $state, authentication){
         $scope.doLogin = function() {
-            //TODO:
+            authentication.login($scope.login.username, $scope.login.password)
+                .then(function(){
+                    $state.go('private.home');
+                }, function(){
+                    $scope.loginErrorMessage = "Invalid username or password. Please, try again.";
+                });
         };
     }]);
 })(window);

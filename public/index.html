@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <base href="/">
 </head>
 <body>
+    <!--TODO: to directive-->
+    <div ng-controller="LoginPanelController">
+        <div ng-show="!user.isAuthenticated">
+            <p>Login</p>
+            <a ui-sref="login">With your user name and password</a>
+        </div>
+        <button ng-click="logout()" ng-show="user.isAuthenticated">Logout</button>
+    </div>
+
     <section ui-view></section>
 
     <script src="vendor/angular/angular.min.js"></script>
@@ -14,8 +22,12 @@
     <script src="vendor/angular-resource/angular-resource.min.js"></script>
     
     <script src="app/app.js"></script>
-    
-    <script src="app/services/users.js"></script>
+    <script src="app/login-ctrl.js"></script>
+
+    <script src="app/services/user.js"></script>
+    <script src="app/services/authentication.js"></script>
+    <script src="app/services/authorization.js"></script>
+    <script src="app/services/security-interceptor.js"></script>
 
     <script src="app/home/ctrl.js"></script>
     <script src="app/login/ctrl.js"></script>

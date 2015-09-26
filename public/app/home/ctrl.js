@@ -11,8 +11,7 @@
             controller: 'HomeController'
         });
     }])
-    .controller('HomeController', ['$scope', 'users', function($scope, users){
-        
-        
+    .controller('HomeController', ['$scope', function($scope){
+
     }]);
 })(window);

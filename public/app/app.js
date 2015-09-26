@@ -6,10 +6,15 @@
 
     window.app = angular.module('workerpal',
         ['ui.router', 'ngResource'])
-    .config(['$locationProvider', '$stateProvider', function($locationProvider, $stateProvider){
-        $locationProvider.html5Mode(true);
-        
-         $stateProvider.state('private', {
+    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider',
+            function($urlRouterProvider, $stateProvider, $httpProvider){
+
+        $httpProvider.interceptors.push('securityInterceptor');
+
+        $urlRouterProvider.otherwise('/');
+
+        $stateProvider
+        .state('private', {
             url: '/private',
             template: '<ui-view></ui-view>',
             isAbstract: true

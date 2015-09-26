@@ -8,11 +8,15 @@
         $stateProvider.state('private.home', {
             url: '/',
             templateUrl: 'app/private/home/view.html',
-            controller: 'PrivateHomeController'
+            controller: 'PrivateHomeController',
+            resolve:{
+                authorized: ['authorization', function(authorization){
+                    return authorization.authorize();
+                }]
+            }
         });
     }])
     .controller('PrivateHomeController', ['$scope', function($scope){
-        //TODO: Prevent non logged access to private area
         $scope.user = { name: '[The logged user name goes here]' };
     }]);
 })(window);

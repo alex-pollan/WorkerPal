@@ -3,6 +3,7 @@
  */
 
 var cqrs = require('../cqrs');
+var events = require('./events');
 
 var Project = function() {
     this.id = '';
@@ -14,29 +15,21 @@ Project.inheritsFrom(cqrs.AggregateRoot);
 Project.prototype.construct = function(id, name) {
     this.initialize();
 
-    this.applyChange({
-        eventName: 'ProjectCreated',
-        id: id,
-        name: name
-    });
+    this.applyChange(new events.ProjectCreated(id, name));
 };
 
 Project.prototype.assignTo = function(userId) {
-    this.applyChange({
-        eventName: 'ProjectAssigned',
-        id: this.id,
-        userId: userId
-    });
+    this.applyChange(new events.ProjectAssigned(this.id, userId));
 };
 
-Project.prototype.applyProjectCreated = function(evnt) {
-    this.id = evnt.id;
-    this.name = evnt.name;
+Project.prototype.applyProjectCreated = function(event) {
+    this.id = event.id;
+    this.name = event.name;
 };
 
-Project.prototype.applyProjectAssigned = function(evnt) {
-    this.id = evnt.id;
-    this.userId = evnt.userId;
+Project.prototype.applyProjectAssigned = function(event) {
+    this.id = event.id;
+    this.userId = event.userId;
 };
 
 module.exports = {

@@ -6,7 +6,6 @@ var domain = require('./domain');
 
 var CommandHandlers = function(repository) {
     return  {
-        //Commands
         handleCreateProject: function(command) {
             var project = new domain.Project();
             project.construct(command.id, command.name);
@@ -17,13 +16,6 @@ var CommandHandlers = function(repository) {
             project.assignTo(command.userId);
             repository.save(project, command.expectedVersion);
             console.log('handleAssignProject called...');
-        },
-        //Events
-        handleProjectCreated: function(evnt) {
-            console.log('handleProjectCreated called...');
-        },
-        handleProjectAssigned: function(evnt) {
-            console.log('handleProjectAssigned called...');
         }
     };
 };

@@ -57,9 +57,11 @@ Bus.prototype.registerHandlers = function(handlers) {
     };
 
     for (var member in handlers) {
-        if (_.isFunction(handlers[member]) && _.startsWith(member, _this._handlePrefix)) {
-            console.log('Found the handler: ' + member);
-            _addMessageHandler(_getMessageName(member), handlers[member]);
+        if (handlers.hasOwnProperty(member)) {
+            if (_.isFunction(handlers[member]) && _.startsWith(member, _this._handlePrefix)) {
+                console.log('Found the handler: ' + member);
+                _addMessageHandler(_getMessageName(member), handlers[member]);
+            }
         }
     }
 };
@@ -106,11 +108,15 @@ Bus.prototype.publish = function(evnt) {
     }
 };
 
-var FakeBus = function() {};
-FakeBus.inheritsFrom(Bus);
-FakeBus.prototype.handleEvent = function(handler, evnt) {
-    //TODO:
-    console.log('fake processHandler');
+var InMemoryBus = function() {
+    this.eventHandlersQueue = new EventHandlersQueue();
+    this.eventHandlersQueue.start();
+};
+
+InMemoryBus.inheritsFrom(Bus);
+
+InMemoryBus.prototype.handleEvent = function(handler, event) {
+    this.eventHandlersQueue.enqueue(handler, event);
 };
 
 //endregion
@@ -119,29 +125,61 @@ FakeBus.prototype.handleEvent = function(handler, evnt) {
 
 var EventHandlersQueue = function() {
     this.queue = [];
-    this.stopped = false;
-    this.interval = 100;
+    this.started = false;
+    this.interval = 500;
 };
 
-EventHandlersQueue.prototype.enqueue = function(handler) {
-    this.queue.push(handler);
+EventHandlersQueue.prototype.enqueue = function(handler, event) {
+    this.queue.push({handler : handler, event : event});
 };
 
 EventHandlersQueue.prototype.start = function() {
-    if (this.intervalId) return;
-
     var _this = this;
-    this.intervalId = setInterval(function() {
-        //TODO:
+
+    if (this.started) return;
+
+    this.processNext();
+
+    this.started = true;
+};
+
+EventHandlersQueue.prototype.process = function() {
+    var _this = this;
+
+    if (this.queue.length == 0) {
+        this.processNext();
+        return;
+    }
+
+    var handlerEntry = this.queue[0];
+    try {
+        var promise = handlerEntry.handler(handlerEntry.event);
+
+        if (!promise || !promise.then) {
+            throw new Error('Expected a promise from handler of event ' + handlerEntry.event.eventName);
+        }
+
+        promise.then(function(){
+            _.pullAt(_this.queue, 0);
+            _this.processNext();
+            console.info('Event ' + handlerEntry.event.eventName + ' processed...');
+        }, function(e){
+            console.error('Event ' + handlerEntry.event.eventName + ' threw an error: ' + e);
+        });
+    }
+    catch(e) {
+        console.error('Event ' + handlerEntry.event.eventName + ' could not be processed: ' + e);
+    }
+};
+
+EventHandlersQueue.prototype.processNext = function() {
+    var _this = this;
+
+    setTimeout(function(){
+        _this.process();
     }, this.interval);
 };
 
-EventHandlersQueue.prototype.dispose = function() {
-    if (!this.intervalId) return;
-
-    clearInterval(this.intervalId);
-    delete this.intervalId;
-};
 //endregion
 
 //region AggregateRoot
@@ -154,7 +192,6 @@ var AggregateRoot = function() {
     };
 
     this.initialize = function(){
-        debugger;
         this._changes = [];
         this.id = '';
         this.version = 0;
@@ -270,7 +307,7 @@ Repository.prototype.getById = function(id) {
 //endregion
 
 module.exports = {
-    Bus: FakeBus,
+    Bus: InMemoryBus,
     EventStore: EventStore,
     Repository: Repository,
     AggregateRoot: AggregateRoot

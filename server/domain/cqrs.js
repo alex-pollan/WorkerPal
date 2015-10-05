@@ -227,46 +227,61 @@ var EventStore = function(eventPublisher) {
     this.publisher = eventPublisher;
     this.current = [];
 };
+EventStore.prototype.loadEventSource = function(aggregateId) {
+    //TODO: db
+    return _.find(this.current, function(item) {
+        return item.aggregateId === aggregateId;
+    });
+};
+
+EventStore.prototype.createEventSource = function(aggregateId) {
+    //TODO: db
+    var eventsSource = {
+        aggregateId: aggregateId,
+        eventDescriptors: []
+    };
+    this.current.push(eventsSource);
+    return eventsSource;
+};
+
+EventStore.prototype.addEvent = function(eventsSource, eventDescriptor){
+    //TODO: db
+    eventsSource.eventDescriptors.push(eventDescriptor);
+};
 
 EventStore.prototype.saveEvents = function(aggregateId, events, expectedVersion) {
     var _this = this;
 
     // try to get event descriptors list for given aggregate id
     // otherwise -> create empty dictionary
-    var eventsSource = _.find(this.current, function(item) {
-        return item.aggregateId === aggregateId;
-    });
+    var eventsSource = this.loadEventSource(aggregateId);
 
     if (!eventsSource) {
-        eventsSource = {
-            aggregateId: aggregateId,
-            eventDescriptors: []
-        }
-        this.current.push(eventsSource);
+        eventsSource = this.createEventSource(aggregateId);
     }
     // check whether latest event version matches current aggregate version
     // otherwise -> throw exception
     else if (eventsSource.eventDescriptors[eventsSource.eventDescriptors.length - 1].version != expectedVersion
-        && expectedVersion != -1) {
+            && expectedVersion != -1) {
         throw new Error('ConcurrencyException');
     }
 
     var i = expectedVersion;
 
     // iterate through current aggregate events increasing version with each processed event
-    _.each(events, function(evnt) {
+    _.each(events, function(event) {
         i++;
-        evnt.version = i;
+        event.version = i;
 
         // push event to the event descriptors list for current aggregate
-        eventsSource.eventDescriptors.push({
+        _this.addEvent(eventsSource, {
             aggregateId: aggregateId,
-            eventData: evnt,
+            eventData: event,
             version: i
         });
 
         // publish current event to the bus for further processing by subscribers
-        _this.publisher.publish(evnt);
+        _this.publisher.publish(event);
     });
 };
 

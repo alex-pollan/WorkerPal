@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
 var authorize = require('./authorize');
 
+var bootstrap = require('./domain/bootstrap')();
+
 var app = express();
 app.use(express.static('public'));
 app.use('/vendor', express.static('bower_components'));

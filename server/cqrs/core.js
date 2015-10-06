@@ -227,16 +227,17 @@ var EventStore = function(eventPublisher) {
     this.publisher = eventPublisher;
     this.current = [];
 };
+
+EventStore.prototype.setup = function () { };
+
 EventStore.prototype.loadEventSource = function(aggregateId) {
-    //TODO: db
     return _.find(this.current, function(item) {
         return item.aggregateId === aggregateId;
     });
 };
 
 EventStore.prototype.createEventSource = function(aggregateId) {
-    //TODO: db
-    var eventsSource = {
+     var eventsSource = {
         aggregateId: aggregateId,
         eventDescriptors: []
     };
@@ -244,8 +245,8 @@ EventStore.prototype.createEventSource = function(aggregateId) {
     return eventsSource;
 };
 
-EventStore.prototype.addEvent = function(eventsSource, eventDescriptor){
-    //TODO: db
+EventStore.prototype.addEvent = function(aggregateId, eventDescriptor){
+	var eventsSource = this.loadEventSource(aggregateId);
     eventsSource.eventDescriptors.push(eventDescriptor);
 };
 
@@ -274,7 +275,7 @@ EventStore.prototype.saveEvents = function(aggregateId, events, expectedVersion)
         event.version = i;
 
         // push event to the event descriptors list for current aggregate
-        _this.addEvent(eventsSource, {
+        _this.addEvent(aggregateId, {
             aggregateId: aggregateId,
             eventData: event,
             version: i

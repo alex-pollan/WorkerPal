@@ -2,3 +2,8 @@
 bower_components/
 build/
 node_modules/
+obj/
+bin/
+/server/db
+.ntvs_analysis.dat
+.vs/

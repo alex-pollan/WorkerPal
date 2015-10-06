@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2c3f948f-0f3a-4a8c-beb2-2e8aa5ec13c9}</ProjectGuid>
+    <ProjectHome />
+    <ProjectView>ProjectFiles</ProjectView>
+    <StartupFile>server\server.js</StartupFile>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <EnableTypeScript>true</EnableTypeScript>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Content Include="bower.json" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <Content Include="public\index.html" />
+    <Compile Include="server\authorize.js" />
+    <Compile Include="server\cqrs\nedbEventStore.js" />
+    <Compile Include="server\server.js" />
+    <Content Include="bower_components\angular\angular-csp.css" />
+    <Content Include="bower_components\angular\.bower.json" />
+    <Content Include="bower_components\angular\bower.json" />
+    <Content Include="bower_components\angular\package.json" />
+    <Content Include="bower_components\angular\README.md" />
+    <Compile Include="bower_components\angular\angular.js" />
+    <Compile Include="bower_components\angular\angular.min.js" />
+    <Compile Include="bower_components\angular\index.js" />
+    <Content Include="bower_components\angular-resource\.bower.json" />
+    <Content Include="bower_components\angular-resource\bower.json" />
+    <Content Include="bower_components\angular-resource\package.json" />
+    <Content Include="bower_components\angular-resource\README.md" />
+    <Compile Include="bower_components\angular-resource\angular-resource.js" />
+    <Compile Include="bower_components\angular-resource\angular-resource.min.js" />
+    <Compile Include="bower_components\angular-resource\index.js" />
+    <Content Include="bower_components\angular-route\.bower.json" />
+    <Content Include="bower_components\angular-route\bower.json" />
+    <Content Include="bower_components\angular-route\package.json" />
+    <Content Include="bower_components\angular-route\README.md" />
+    <Compile Include="bower_components\angular-route\angular-route.js" />
+    <Compile Include="bower_components\angular-route\angular-route.min.js" />
+    <Compile Include="bower_components\angular-route\index.js" />
+    <Content Include="bower_components\angular-ui\.bower.json" />
+    <Content Include="bower_components\angular-ui\package.json" />
+    <Content Include="bower_components\angular-ui\CHANGELOG.md" />
+    <Content Include="bower_components\angular-ui\README.md" />
+    <Compile Include="bower_components\angular-ui\grunt.js" />
+    <Content Include="bower_components\angular-ui-router\.bower.json" />
+    <Content Include="bower_components\angular-ui-router\bower.json" />
+    <Content Include="bower_components\angular-ui-router\CHANGELOG.md" />
+    <Content Include="bower_components\angular-ui-router\CONTRIBUTING.md" />
+    <Content Include="bower_components\angular-ui-router\README.md" />
+    <Content Include="bower_components\angular-ui\build\angular-ui.css" />
+    <Content Include="bower_components\angular-ui\build\angular-ui.min.css" />
+    <Compile Include="bower_components\angular-ui\build\angular-ui-ieshiv.js" />
+    <Compile Include="bower_components\angular-ui\build\angular-ui-ieshiv.min.js" />
+    <Compile Include="bower_components\angular-ui\build\angular-ui.js" />
+    <Compile Include="bower_components\angular-ui\build\angular-ui.min.js" />
+    <Compile Include="bower_components\angular-ui\common\module.js" />
+    <Content Include="bower_components\angular-ui\templates\dependencies.json" />
+    <Content Include="bower_components\angular-ui\templates\README.md" />
+    <Compile Include="bower_components\angular-ui\templates\template.js" />
+    <Compile Include="bower_components\angular-ui\test\test-config.js" />
+    <Content Include="bower_components\angular-ui\common\ieshiv\README.md" />
+    <Compile Include="bower_components\angular-ui\common\ieshiv\ieshiv.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\animate\animate.js" />
+    <Content Include="bower_components\angular-ui\modules\directives\calendar\dependencies.json" />
+    <Compile Include="bower_components\angular-ui\modules\directives\calendar\calendar.js" />
+    <Content Include="bower_components\angular-ui\modules\directives\codemirror\dependencies.json" />
+    <Compile Include="bower_components\angular-ui\modules\directives\codemirror\codemirror.js" />
+    <Content Include="bower_components\angular-ui\modules\directives\currency\README.md" />
+    <Compile Include="bower_components\angular-ui\modules\directives\currency\currency.js" />
+    <Content Include="bower_components\angular-ui\modules\directives\date\dependencies.json" />
+    <Content Include="bower_components\angular-ui\modules\directives\date\README.md" />
+    <Compile Include="bower_components\angular-ui\modules\directives\date\date.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\event\event.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\if\if.js" />
+    <Content Include="bower_components\angular-ui\modules\directives\jq\README.md" />
+    <Compile Include="bower_components\angular-ui\modules\directives\jq\jq.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\keypress\keypress.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\map\map.js" />
+    <Content Include="bower_components\angular-ui\modules\directives\mask\dependencies.json" />
+    <Compile Include="bower_components\angular-ui\modules\directives\mask\mask.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\reset\reset.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\route\route.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\scrollfix\scrollfix.js" />
+    <Content Include="bower_components\angular-ui\modules\directives\select2\dependencies.json" />
+    <Compile Include="bower_components\angular-ui\modules\directives\select2\select2.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\showhide\showhide.js" />
+    <Content Include="bower_components\angular-ui\modules\directives\sortable\REDME.md" />
+    <Compile Include="bower_components\angular-ui\modules\directives\sortable\sortable.js" />
+    <Content Include="bower_components\angular-ui\modules\directives\tinymce\dependencies.json" />
+    <Compile Include="bower_components\angular-ui\modules\directives\tinymce\tinymce.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\validate\validate.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\animate\test\animateSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\calendar\test\calendarSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\codemirror\test\codemirrorSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\currency\test\currencySpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\date\test\dateSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\event\test\eventSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\if\test\ifSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\jq\test\jqSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\keypress\test\keydownSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\keypress\test\keypressSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\keypress\test\keyupSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\map\test\mapSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\mask\test\maskSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\reset\test\resetSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\route\test\routeSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\scrollfix\test\scrollfixSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\select2\test\select2Spec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\showhide\test\showhideSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\sortable\test\sortableSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\tinymce\test\tinymceSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\directives\validate\test\validateSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\filters\format\format.js" />
+    <Compile Include="bower_components\angular-ui\modules\filters\highlight\highlight.js" />
+    <Compile Include="bower_components\angular-ui\modules\filters\inflector\inflector.js" />
+    <Compile Include="bower_components\angular-ui\modules\filters\unique\unique.js" />
+    <Compile Include="bower_components\angular-ui\modules\filters\format\test\formatSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\filters\highlight\test\highlightSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\filters\inflector\test\inflectorSpec.js" />
+    <Compile Include="bower_components\angular-ui\modules\filters\unique\test\uniqueSpec.js" />
+    <Compile Include="bower_components\angular-ui\templates\test\templateSpec.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\angular\angular-1.0.0rc4.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\angular\angular-1.0.0rc5.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\angular\angular-mocks.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\angular-1.0.1\angular-mocks.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\angular-1.0.1\angular.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\bootstrap\bootstrap-modal.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\codemirror\codemirror.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\googlemaps\googlemaps.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\jquery\jquery-1.7.2.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\jquery\jquery-ui-1.8.18.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\maskedinput\jquery.maskedinput-1.3.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\select2\select2.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\tinymce\jquery.tinymce.js" />
+    <Compile Include="bower_components\angular-ui\test\lib\tinymce\tiny_mce.js" />
+    <TypeScriptCompile Include="bower_components\angular-ui-router\api\angular-ui-router.d.ts" />
+    <Compile Include="bower_components\angular-ui-router\release\angular-ui-router.js" />
+    <Compile Include="bower_components\angular-ui-router\release\angular-ui-router.min.js" />
+    <Compile Include="bower_components\angular-ui-router\src\common.js" />
+    <Compile Include="bower_components\angular-ui-router\src\resolve.js" />
+    <Compile Include="bower_components\angular-ui-router\src\state.js" />
+    <Compile Include="bower_components\angular-ui-router\src\stateDirectives.js" />
+    <Compile Include="bower_components\angular-ui-router\src\stateFilters.js" />
+    <Compile Include="bower_components\angular-ui-router\src\templateFactory.js" />
+    <Compile Include="bower_components\angular-ui-router\src\urlMatcherFactory.js" />
+    <Compile Include="bower_components\angular-ui-router\src\urlRouter.js" />
+    <Compile Include="bower_components\angular-ui-router\src\view.js" />
+    <Compile Include="bower_components\angular-ui-router\src\viewDirective.js" />
+    <Compile Include="bower_components\angular-ui-router\src\viewScroll.js" />
+    <Compile Include="public\app\app.js" />
+    <Compile Include="public\app\login-ctrl.js" />
+    <Content Include="public\app\home\view.html" />
+    <Compile Include="public\app\home\ctrl.js" />
+    <Content Include="public\app\login\view.html" />
+    <Compile Include="public\app\login\ctrl.js" />
+    <Compile Include="public\app\services\authentication.js" />
+    <Compile Include="public\app\services\authorization.js" />
+    <Compile Include="public\app\services\security-interceptor.js" />
+    <Compile Include="public\app\services\user.js" />
+    <Content Include="public\app\private\home\view.html" />
+    <Compile Include="public\app\private\home\ctrl.js" />
+    <Compile Include="server\api\login.js" />
+    <Compile Include="server\config\config.js" />
+    <Compile Include="server\config\tokenManager.js" />
+    <Compile Include="server\bootstrap.js" />
+    <Compile Include="server\cqrs\core.js" />
+    <Compile Include="server\domain\projects\commands.js" />
+    <Compile Include="server\domain\projects\domain.js" />
+    <Compile Include="server\domain\projects\events.js" />
+    <Compile Include="server\readModels\projects\denormalizers.js" />
+    <Content Include="tests\public\readme.txt" />
+    <Content Include="tests\server\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bower_components" />
+    <Folder Include="bower_components\angular" />
+    <Folder Include="bower_components\angular-resource" />
+    <Folder Include="bower_components\angular-route" />
+    <Folder Include="bower_components\angular-ui" />
+    <Folder Include="bower_components\angular-ui\build" />
+    <Folder Include="bower_components\angular-ui\common" />
+    <Folder Include="bower_components\angular-ui\common\ieshiv" />
+    <Folder Include="bower_components\angular-ui\common\stylesheets" />
+    <Folder Include="bower_components\angular-ui\modules" />
+    <Folder Include="bower_components\angular-ui\modules\directives" />
+    <Folder Include="bower_components\angular-ui\modules\directives\animate" />
+    <Folder Include="bower_components\angular-ui\modules\directives\animate\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\calendar" />
+    <Folder Include="bower_components\angular-ui\modules\directives\calendar\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\codemirror" />
+    <Folder Include="bower_components\angular-ui\modules\directives\codemirror\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\currency" />
+    <Folder Include="bower_components\angular-ui\modules\directives\currency\stylesheets" />
+    <Folder Include="bower_components\angular-ui\modules\directives\currency\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\date" />
+    <Folder Include="bower_components\angular-ui\modules\directives\date\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\event" />
+    <Folder Include="bower_components\angular-ui\modules\directives\event\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\if" />
+    <Folder Include="bower_components\angular-ui\modules\directives\if\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\jq" />
+    <Folder Include="bower_components\angular-ui\modules\directives\jq\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\keypress" />
+    <Folder Include="bower_components\angular-ui\modules\directives\keypress\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\map" />
+    <Folder Include="bower_components\angular-ui\modules\directives\map\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\mask" />
+    <Folder Include="bower_components\angular-ui\modules\directives\mask\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\reset" />
+    <Folder Include="bower_components\angular-ui\modules\directives\reset\stylesheets" />
+    <Folder Include="bower_components\angular-ui\modules\directives\reset\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\route" />
+    <Folder Include="bower_components\angular-ui\modules\directives\route\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\scrollfix" />
+    <Folder Include="bower_components\angular-ui\modules\directives\scrollfix\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\select2" />
+    <Folder Include="bower_components\angular-ui\modules\directives\select2\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\showhide" />
+    <Folder Include="bower_components\angular-ui\modules\directives\showhide\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\sortable" />
+    <Folder Include="bower_components\angular-ui\modules\directives\sortable\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\tinymce" />
+    <Folder Include="bower_components\angular-ui\modules\directives\tinymce\test" />
+    <Folder Include="bower_components\angular-ui\modules\directives\validate" />
+    <Folder Include="bower_components\angular-ui\modules\directives\validate\test" />
+    <Folder Include="bower_components\angular-ui\modules\filters" />
+    <Folder Include="bower_components\angular-ui\modules\filters\format" />
+    <Folder Include="bower_components\angular-ui\modules\filters\format\test" />
+    <Folder Include="bower_components\angular-ui\modules\filters\highlight" />
+    <Folder Include="bower_components\angular-ui\modules\filters\highlight\test" />
+    <Folder Include="bower_components\angular-ui\modules\filters\inflector" />
+    <Folder Include="bower_components\angular-ui\modules\filters\inflector\test" />
+    <Folder Include="bower_components\angular-ui\modules\filters\unique" />
+    <Folder Include="bower_components\angular-ui\modules\filters\unique\test" />
+    <Folder Include="bower_components\angular-ui\templates" />
+    <Folder Include="bower_components\angular-ui\templates\stylesheets" />
+    <Folder Include="bower_components\angular-ui\templates\test" />
+    <Folder Include="bower_components\angular-ui\test" />
+    <Folder Include="bower_components\angular-ui\test\lib" />
+    <Folder Include="bower_components\angular-ui\test\lib\angular" />
+    <Folder Include="bower_components\angular-ui\test\lib\angular-1.0.1" />
+    <Folder Include="bower_components\angular-ui\test\lib\bootstrap" />
+    <Folder Include="bower_components\angular-ui\test\lib\calendar" />
+    <Folder Include="bower_components\angular-ui\test\lib\codemirror" />
+    <Folder Include="bower_components\angular-ui\test\lib\googlemaps" />
+    <Folder Include="bower_components\angular-ui\test\lib\jquery" />
+    <Folder Include="bower_components\angular-ui\test\lib\maskedinput" />
+    <Folder Include="bower_components\angular-ui\test\lib\select2" />
+    <Folder Include="bower_components\angular-ui\test\lib\tinymce" />
+    <Folder Include="bower_components\angular-ui-router" />
+    <Folder Include="bower_components\angular-ui-router\api" />
+    <Folder Include="bower_components\angular-ui-router\release" />
+    <Folder Include="bower_components\angular-ui-router\src" />
+    <Folder Include="public" />
+    <Folder Include="public\app" />
+    <Folder Include="public\app\home" />
+    <Folder Include="public\app\login" />
+    <Folder Include="public\app\private" />
+    <Folder Include="public\app\private\home" />
+    <Folder Include="public\app\services" />
+    <Folder Include="server" />
+    <Folder Include="server\api" />
+    <Folder Include="server\config" />
+    <Folder Include="server\domain" />
+    <Folder Include="server\domain\projects" />
+    <Folder Include="server\cqrs\" />
+    <Folder Include="server\readModels" />
+    <Folder Include="server\readModels\projects" />
+    <Folder Include="tests" />
+    <Folder Include="tests\public" />
+    <Folder Include="tests\server" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

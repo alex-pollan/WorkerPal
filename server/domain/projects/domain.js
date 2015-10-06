@@ -2,7 +2,7 @@
  * Created by Alex on 9/27/2015.
  */
 
-var cqrs = require('../cqrs');
+var cqrs = require('../../cqrs/core');
 var events = require('./events');
 
 var Project = function() {

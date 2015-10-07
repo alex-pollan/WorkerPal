@@ -4,6 +4,6 @@
 module.exports = {
 	jwtSecretToken: 'sdf3d345fd4570kresax',
 	nedb : {
-		path: __dirname + '\\..\\db\\nedb.db'
+		path: __dirname + '\\..\\db\\nedb-{0}.db'
 	}
 };

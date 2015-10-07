@@ -1,14 +1,14 @@
 ﻿
 var cqrs = require('./core');
-var config = require('../config/config');
 var Datastore = require('nedb');
 
 var NedbEventStore = function (eventPublisher) {
 	this.publisher = eventPublisher;
 };
 
-cqrs.EventStore.prototype.setup = function () {
-	this.db = new Datastore({ filename: config.nedb.path, autoload: true });
+//TODO: segment database per users?
+cqrs.EventStore.prototype.loadDb = function (dbPath) {
+	this.db = new Datastore({ filename: dbPath, autoload: true });
 };
 
 NedbEventStore.inheritsFrom(cqrs.EventStore);
@@ -22,7 +22,9 @@ NedbEventStore.inheritsFrom(cqrs.EventStore);
 //		aggregateId: aggregateId,
 //		eventDescriptors: []
 //	};
-//	//TODO: db
+    
+    
+
 //	return eventsSource;
 //};
 

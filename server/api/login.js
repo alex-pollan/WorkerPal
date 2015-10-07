@@ -21,6 +21,7 @@ module.exports = function UsersApi(app) {
         if (password !== 'alex') return res.send(401);
 
         var user = {
+            id: '2e4adbbc-3942-4083-8e4e-84bf6cdf32c7',
             name: 'Alex',
             username: 'alex'
         };

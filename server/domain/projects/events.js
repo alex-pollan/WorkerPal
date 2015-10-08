@@ -14,17 +14,17 @@ var ProjectCreated = function(id, name, description, userId, timestamp) {
 };
 ProjectCreated.prototype.eventName = 'ProjectCreated';
 
-var ProjectAssigned = function(id, memberId, timestamp) {
+var ProjectNameChanged = function(id, name, timestamp) {
     return {
-        eventName: ProjectAssigned.prototype.eventName,
+        eventName: ProjectNameChanged.prototype.eventName,
         id: id,
-        memberId: memberId,
+        name: name,
         timestamp: timestamp
     };
 };
-ProjectAssigned.prototype.eventName = 'ProjectAssigned';
+ProjectNameChanged.prototype.eventName = 'ProjectNameChanged';
 
 module.exports = {
     ProjectCreated: ProjectCreated,
-    ProjectAssigned: ProjectAssigned
+    ProjectNameChanged: ProjectNameChanged
 };

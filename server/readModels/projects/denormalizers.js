@@ -11,8 +11,8 @@ var EventHandlers = function() {
             console.log('handleProjectCreated called...');
             return q.delay(50);
         },
-        handleProjectAssigned: function(event) {
-            console.log('handleProjectAssigned called...');
+        handleProjectNameChanged: function(event) {
+            console.log('handleProjectNameChanged called...');
             return q.delay(50);
         }
     };

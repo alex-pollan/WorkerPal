@@ -14,4 +14,9 @@ module.exports = function ProjectsApi(app, bus) {
 		bus.send(new commands.Commands.CreateProject(req.body.id, req.body.name, req.body.description, req.user.id));
         res.end();
     });
+
+    app.post('/api/projects/changename', authorize, function (req, res) {
+        bus.send(new commands.Commands.ChangeName(req.body.id, req.body.name, req.body.expectedVersion));
+        res.end();
+    });
 };

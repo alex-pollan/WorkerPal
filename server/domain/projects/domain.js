@@ -21,11 +21,12 @@ Project.prototype.construct = function(id, name, description, userId) {
     
     this.initialize();
 
-    this.applyChange(new events.ProjectCreated(id, name, description, userId, clock.getDate()));
+    this.applyChange(new events.ProjectCreated(id, name, description, userId, this.clock.getDate()));
 };
 
-Project.prototype.assignTo = function(memberId) {
-    this.applyChange(new events.ProjectAssigned(this.id, memberId, clock.getDate()));
+Project.prototype.changeName = function (name) {
+    if (!name) throw new Error('Name expected');
+    this.applyChange(new events.ProjectNameChanged(this.id, name, this.clock.getDate()));
 };
 
 Project.prototype.applyProjectCreated = function(event) {
@@ -35,9 +36,9 @@ Project.prototype.applyProjectCreated = function(event) {
     this.userId = event.userId;
 };
 
-Project.prototype.applyProjectAssigned = function(event) {
+Project.prototype.applyProjectNameChanged = function(event) {
     this.id = event.id;
-    this.memberId = event.memberId;
+    this.name = event.name;
 };
 
 module.exports = {

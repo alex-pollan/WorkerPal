@@ -15,9 +15,19 @@ var CreateProject = function(id, name, description, userId) {
         userId: userId        
     };
 };
-CreateProject.prototype.commandName = 'ProjectCreated';
+CreateProject.prototype.commandName = 'CreateProject';
 
-
+var ChangeName = function (id, name, expectedVersion) {
+    if (!id) throw new Error('Id expected');
+    
+    return {
+        commandName: ChangeName.prototype.commandName,
+        id: id,
+        name: name,
+        expectedVersion: expectedVersion
+    };
+};
+ChangeName.prototype.commandName = 'ProjectChangeName';
 
 var CommandHandlers = function(repository) {
     return  {
@@ -26,17 +36,19 @@ var CommandHandlers = function(repository) {
             project.construct(command.id, command.name, command.description, command.userId);
             repository.save(project, -1);
         },
-        handleAssignProject: function(command) {
-            var project = repository.getById(command.id);
-            project.assignTo(command.userId);
-            repository.save(project, command.expectedVersion);
-            console.log('handleAssignProject called...');
+        handleProjectChangeName: function (command) {
+            console.log('handleProjectChangeName called...');
+            var project = repository.getById(command.id, function (err, project) {
+                project.changeName(command.name);
+                repository.save(project, command.expectedVersion);
+            });
         }
     };
 };
 module.exports = {
     CommandHandlers: CommandHandlers,
     Commands: {
-        CreateProject
+        CreateProject: CreateProject,
+        ChangeName: ChangeName
     }
 };

@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2c3f948f-0f3a-4a8c-beb2-2e8aa5ec13c9}</ProjectGuid>
     <ProjectHome />
-    <ProjectView>ProjectFiles</ProjectView>
+    <ProjectView>ShowAllFiles</ProjectView>
     <StartupFile>server\server.js</StartupFile>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -23,6 +23,7 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="public\index.html" />
+    <Compile Include="server\api\projects.js" />
     <Compile Include="server\authorize.js" />
     <Compile Include="server\cqrs\nedbEventStore.js" />
     <Compile Include="server\server.js" />

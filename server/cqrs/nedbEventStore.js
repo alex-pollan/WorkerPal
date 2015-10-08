@@ -4,24 +4,24 @@ var Datastore = require('nedb');
 
 var NedbEventStore = function (eventPublisher) {
 	this.publisher = eventPublisher;
-	this.lastDbPath = '';
 };
 
-//TODO: segment database per users?
 cqrs.EventStore.prototype.loadDb = function (dbPath) {
-	if (dbPath !== this.lastDbPath) {
-		console.log('NedbEventStore:: Loading DB "' + dbPath + '"...');
-		this.db = new Datastore({ filename: dbPath, autoload: true });
-	}
+	this.db = new Datastore({ filename: dbPath, autoload: true });
 };
 
 NedbEventStore.inheritsFrom(cqrs.EventStore);
 
-//NedbEventStore.prototype.loadEventSource = function (aggregateId) {
-//	//TODO: db
+//NedbEventStore.prototype.loadEventSource = function (aggregateId, callback) {
+//    this.db.findOne({ aggregateId: aggregateId }, function (err, doc) {
+//        if (err) console.log(err);
+  
+//        //i (doc) { }
+//    });
+
 //};
 
-//NedbEventStore.prototype.createEventSource = function (aggregateId) {
+//NedbEventStore.prototype.createEventSource = function (aggregateId, callback) {
 //	var eventsSource = {
 //		aggregateId: aggregateId,
 //		eventDescriptors: []
@@ -32,7 +32,7 @@ NedbEventStore.inheritsFrom(cqrs.EventStore);
 //	return eventsSource;
 //};
 
-//NedbEventStore.prototype.addEvent = function (aggregateId, eventDescriptor) {
+//NedbEventStore.prototype.addEvent = function (aggregateId, eventDescriptor, callback) {
 //	//TODO: db
 //	//eventsSource.eventDescriptors.push(eventDescriptor);
 //};

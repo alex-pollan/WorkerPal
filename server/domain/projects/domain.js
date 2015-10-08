@@ -8,28 +8,36 @@ var events = require('./events');
 var Project = function() {
     this.id = '';
     this.name = '';
+    this.description = '';
+    this.userId = '';
 };
 
 Project.inheritsFrom(cqrs.AggregateRoot);
 
-Project.prototype.construct = function(id, name) {
+Project.prototype.construct = function(id, name, description, userId) {
+    if (!id) throw new Error('Id expected');
+    if (!name) throw new Error('Name expected');
+    if (!userId) throw new Error('UserId expected');
+    
     this.initialize();
 
-    this.applyChange(new events.ProjectCreated(id, name));
+    this.applyChange(new events.ProjectCreated(id, name, description, userId, clock.getDate()));
 };
 
-Project.prototype.assignTo = function(userId) {
-    this.applyChange(new events.ProjectAssigned(this.id, userId));
+Project.prototype.assignTo = function(memberId) {
+    this.applyChange(new events.ProjectAssigned(this.id, memberId, clock.getDate()));
 };
 
 Project.prototype.applyProjectCreated = function(event) {
     this.id = event.id;
     this.name = event.name;
+    this.description = event.description;
+    this.userId = event.userId;
 };
 
 Project.prototype.applyProjectAssigned = function(event) {
     this.id = event.id;
-    this.userId = event.userId;
+    this.memberId = event.memberId;
 };
 
 module.exports = {

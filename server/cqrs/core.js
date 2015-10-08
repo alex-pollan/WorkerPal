@@ -21,6 +21,13 @@ if (!Function.prototype.inheritsFrom) {
     };
 }
 
+var Clock = function() {
+};
+
+Clock.prototype.getDate = function() {
+    return new Date().getUTCDate();
+};
+
 //region Bus
 
 var Bus = function() {
@@ -185,6 +192,8 @@ EventHandlersQueue.prototype.processNext = function() {
 //region AggregateRoot
 
 var AggregateRoot = function() {
+    this.clock = new Clock();
+    
     // push atomic aggregate changes to local history for further processing (EventStore.SaveEvents)
     this._applyChange = function(evnt, isNew) {
         this['apply' + evnt.eventName](evnt);
@@ -326,7 +335,8 @@ module.exports = {
     Bus: InMemoryBus,
     EventStore: EventStore,
     Repository: Repository,
-    AggregateRoot: AggregateRoot
+    AggregateRoot: AggregateRoot,
+    Clock: Clock
 };
 
 

@@ -9,7 +9,7 @@ var jwt = require('express-jwt');
 var authorize = require('./authorize');
 var _ = require('lodash');
 
-var context = new (function () {
+var Context = function() {
     var _callbacks = [];
     
     var onUserAuthenticated = function (callback) {
@@ -26,9 +26,11 @@ var context = new (function () {
         onUserAuthenticated: onUserAuthenticated,
         setAuthenticatedUser: setAuthenticatedUser
     };
-})();
+};
 
-var bootstrap = require('./bootstrap')(context);
+var context = Context();
+
+var cqrsRuntime = require('./bootstrap')(context);
 
 var app = express();
 app.use(express.static('public'));
@@ -49,12 +51,13 @@ app.use(jwt({
 
 app.use(function (req, res, next) {
     if (_.startsWith(req.url, '/api/') && req.user) {
-        context.setAuthenticatedUser(req.users);
+        context.setAuthenticatedUser(req.user);
     }
     next();
 });
 
-require('./api/login')(app, jwt, config);
+require('./api/login')(app);
+require('./api/projects')(app, cqrsRuntime.bus);
 
 var server = app.listen(8080, function () {    
     console.log('App listening at http...');

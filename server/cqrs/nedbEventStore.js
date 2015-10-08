@@ -4,11 +4,15 @@ var Datastore = require('nedb');
 
 var NedbEventStore = function (eventPublisher) {
 	this.publisher = eventPublisher;
+	this.lastDbPath = '';
 };
 
 //TODO: segment database per users?
 cqrs.EventStore.prototype.loadDb = function (dbPath) {
-	this.db = new Datastore({ filename: dbPath, autoload: true });
+	if (dbPath !== this.lastDbPath) {
+		console.log('NedbEventStore:: Loading DB "' + dbPath + '"...');
+		this.db = new Datastore({ filename: dbPath, autoload: true });
+	}
 };
 
 NedbEventStore.inheritsFrom(cqrs.EventStore);

@@ -20,18 +20,20 @@ module.exports = function(context) {
         eventStore.loadDb(config.nedb.path.replace('{0}', user.id));
     });
 
-    bus.send({
-        commandName: 'CreateProject',
-        id: 'guid1',
-        name: 'Project 1'
-    });
+//     bus.send({
+//         commandName: 'CreateProject',
+//         id: 'guid1',
+//         name: 'Project 1'
+//     });
+// 
+//     bus.send({
+//         commandName: 'AssignProject',
+//         id: 'guid1',
+//         userId: 'userId1',
+//         expectedVersion: 0
+//     });
 
-    bus.send({
-        commandName: 'AssignProject',
-        id: 'guid1',
-        userId: 'userId1',
-        expectedVersion: 0
-    });
-
-    return bus;
+    return {
+        bus: bus
+    };
 };

@@ -10,13 +10,28 @@ module.exports = function ProjectsApi(app, bus) {
 		]);
     });
 	
-    app.put('/api/projects', authorize, function(req, res) {
-		bus.send(new commands.Commands.CreateProject(req.body.id, req.body.name, req.body.description, req.user.id));
-        res.end();
+    app.put('/api/projects', authorize, function(req, res, next) {
+        bus.send(new commands.Commands.CreateProject(req.body.id, req.body.name, req.body.description, req.user.id), function (err) {
+            if (err) {
+                console.error(err);
+                res.status(500).send(err.message);
+            }
+            res.end();
+
+            next();
+        });
     });
 
-    app.post('/api/projects/changename', authorize, function (req, res) {
-        bus.send(new commands.Commands.ChangeName(req.body.id, req.body.name, req.body.expectedVersion));
-        res.end();
+    app.post('/api/projects/changename', authorize, function (req, res, next) {
+        bus.send(new commands.Commands.ChangeName(req.body.id, req.body.name, req.body.expectedVersion), function (err) {
+            if (err) {
+                console.error(err);
+                res.status(500).send(err.message);
+                res.appErrorCode = err.message;
+            }
+            res.end();
+
+            next();
+        });        
     });
 };

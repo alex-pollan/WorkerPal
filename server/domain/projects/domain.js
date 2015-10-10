@@ -5,7 +5,8 @@
 var cqrs = require('../../cqrs/core');
 var events = require('./events');
 
-var Project = function() {
+var Project = function () {
+    cqrs.AggregateRoot.call(this);
     this.id = '';
     this.name = '';
     this.description = '';
@@ -19,8 +20,6 @@ Project.prototype.construct = function(id, name, description, userId) {
     if (!name) throw new Error('Name expected');
     if (!userId) throw new Error('UserId expected');
     
-    this.initialize();
-
     this.applyChange(new events.ProjectCreated(id, name, description, userId, this.clock.getDate()));
 };
 

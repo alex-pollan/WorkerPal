@@ -74,12 +74,14 @@ Bus.prototype.registerHandlers = function (handlers) {
     }
 };
 
-Bus.prototype.send = function (command) {
+Bus.prototype.send = function (command, callback) {
     var _this = this;
     
     if (!command) {
         throw new Error('Command expected');
     }
+    
+    callback = callback || function () { };
     
     var route = _.find(_this._routes, function (route) {
         return route.messageName === command.commandName;
@@ -91,7 +93,7 @@ Bus.prototype.send = function (command) {
     if (route.handlers.length != 1)
         throw new Error('cannot send to more than one handler');
     
-    route.handlers[0](command);
+    route.handlers[0](command, callback);
 };
 
 Bus.prototype.handleEvent = function (handler, evnt) {
@@ -203,13 +205,8 @@ var AggregateRoot = function () {
         if (isNew) this._changes.push(evnt);
     };
     
-    this.initialize = function () {
-        this._changes = [];
-        this.id = '';
-        this.version = 0;
-    };
-    
-    this.initialize();
+    this._changes = [];
+    this.id = '';
 };
 
 AggregateRoot.prototype.getUncommittedChanges = function () {

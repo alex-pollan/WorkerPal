@@ -31,16 +31,24 @@ ChangeName.prototype.commandName = 'ProjectChangeName';
 
 var CommandHandlers = function(repository) {
     return  {
-        handleCreateProject: function(command) {
+        handleCreateProject: function(command, callback) {
             var project = new domain.Project();
             project.construct(command.id, command.name, command.description, command.userId);
-            repository.save(project, -1);
+            repository.save(project, -1, function (err) { 
+                callback(err);
+            });
         },
-        handleProjectChangeName: function (command) {
+        handleProjectChangeName: function (command, callback) {
             console.log('handleProjectChangeName called...');
             var project = repository.getById(command.id, function (err, project) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
                 project.changeName(command.name);
-                repository.save(project, command.expectedVersion);
+                repository.save(project, command.expectedVersion, function (err) {
+                    callback(err);
+                });
             });
         }
     };

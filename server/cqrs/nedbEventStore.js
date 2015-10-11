@@ -2,15 +2,17 @@
 var cqrs = require('./core');
 var Datastore = require('nedb');
 
-var NedbEventStore = function (eventPublisher) {
-	this.publisher = eventPublisher;
-};
-
-cqrs.EventStore.prototype.loadDb = function (dbPath) {
-	this.db = new Datastore({ filename: dbPath, autoload: true });
-};
-
-NedbEventStore.inheritsFrom(cqrs.EventStore);
+var NedbEventStore = cqrs.EventStore.extend(function (base) {
+    return {
+        init: function (eventPublisher) {
+            base.init.call(this);
+            this.publisher = eventPublisher;
+        },
+        loadDb : function (dbPath) {
+            this.db = new Datastore({ filename: dbPath, autoload: true });
+        }
+    };
+});
 
 //NedbEventStore.prototype.loadEventSource = function (aggregateId, callback) {
 //    this.db.findOne({ aggregateId: aggregateId }, function (err, doc) {

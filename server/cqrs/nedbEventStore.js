@@ -10,34 +10,41 @@ var NedbEventStore = cqrs.EventStore.extend(function (base) {
         },
         loadDb : function (dbPath) {
             this.db = new Datastore({ filename: dbPath, autoload: true });
+        },
+        loadEventSource: function(aggregateId, callback) {
+            this.db.findOne({ aggregateId: aggregateId }, function (err, doc) {
+                if (err) {
+                    console.log('NedbEventStore:loadEventSource. Error: ' + err);
+                };
+  
+                callback(err, doc);
+            });
+        },
+        createEventSource: function (aggregateId, callback) {
+            var eventsSource = {
+        		aggregateId: aggregateId,
+        		eventDescriptors: []
+            };
+
+            this.db.insert(eventsSource, function (err, newDoc) {
+                if (err) {
+                    console.log('NedbEventStore:createEventSource. Error: ' + err);
+                };
+                
+                callback(err, eventsSource);
+            });
+        },
+        addEvent: function (aggregateId, eventDescriptor, callback) {
+            this.db.update({ aggregateId: aggregateId }, { $push: { eventDescriptors: eventDescriptor } }, {}, function (err, numReplaced, upsert) {
+                if (err) {
+                    console.log('NedbEventStore:createEventSource. Error: ' + err);
+                };
+                
+                callback(err);
+            });
         }
     };
 });
-
-//NedbEventStore.prototype.loadEventSource = function (aggregateId, callback) {
-//    this.db.findOne({ aggregateId: aggregateId }, function (err, doc) {
-//        if (err) console.log(err);
-  
-//        //i (doc) { }
-//    });
-
-//};
-
-//NedbEventStore.prototype.createEventSource = function (aggregateId, callback) {
-//	var eventsSource = {
-//		aggregateId: aggregateId,
-//		eventDescriptors: []
-//	};
-    
-    
-
-//	return eventsSource;
-//};
-
-//NedbEventStore.prototype.addEvent = function (aggregateId, eventDescriptor, callback) {
-//	//TODO: db
-//	//eventsSource.eventDescriptors.push(eventDescriptor);
-//};
 
 module.exports = {
 	EventStore: NedbEventStore

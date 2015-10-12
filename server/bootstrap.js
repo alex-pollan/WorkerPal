@@ -16,21 +16,8 @@ module.exports = function() {
     bus.registerHandlers(new projectCommands.CommandHandlers(projectRepository));
     bus.registerHandlers(new projectDenormalizers.EventHandlers());
     
-    eventStore.loadDb(config.nedb.path);
-
-//     bus.send({
-//         commandName: 'CreateProject',
-//         id: 'guid1',
-//         name: 'Project 1'
-//     });
-// 
-//     bus.send({
-//         commandName: 'AssignProject',
-//         id: 'guid1',
-//         userId: 'userId1',
-//         expectedVersion: 0
-//     });
-
+    eventStore.loadDb(config.nedb.eventsSource);
+    
     return {
         bus: bus
     };

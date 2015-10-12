@@ -224,12 +224,14 @@ var EventStore = Fiber.extend(function () {
             this.current = [];
         },
         setup: function () { },
+        //overridable
         loadEventSource: function (aggregateId, callback) {
             var eventSource = _.find(this.current, function (item) {
                 return item.aggregateId === aggregateId;
             });
             callback(null, eventSource);
         },
+        //overridable
         createEventSource: function (aggregateId, callback) {
             var eventsSource = {
                 aggregateId: aggregateId,
@@ -239,6 +241,7 @@ var EventStore = Fiber.extend(function () {
             
             callback(null, eventsSource);
         },
+        //overridable
         addEvent: function (aggregateId, eventDescriptor, callback) {
             this.loadEventSource(aggregateId, function (err, eventsSource) {
                 eventsSource.eventDescriptors.push(eventDescriptor);

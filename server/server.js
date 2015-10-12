@@ -9,29 +9,6 @@ var jwt = require('express-jwt');
 var authorize = require('./authorize');
 var _ = require('lodash');
 
-var Context = function() {
-    var _callbacks = [];
-    
-    var onUserAuthenticated = function (callback) {
-        _callbacks.push(callback);
-    };
-    
-    var setAuthenticatedUser = function (user) {
-        _.each(_callbacks, function (callback) {
-            callback(user);
-        });
-    }
-
-    return {
-        onUserAuthenticated: onUserAuthenticated,
-        setAuthenticatedUser: setAuthenticatedUser
-    };
-};
-
-var context = Context();
-
-var cqrsRuntime = require('./bootstrap')(context);
-
 var app = express();
 app.use(express.static('public'));
 app.use('/vendor', express.static('bower_components'));
@@ -49,12 +26,8 @@ app.use(jwt({
     }
 }));
 
-app.use(function (req, res, next) {
-    if (_.startsWith(req.url, '/api/') && req.user) {
-        context.setAuthenticatedUser(req.user);
-    }
-    next();
-});
+var cqrsRuntime = require('./bootstrap')();
+
 
 require('./api/login')(app);
 require('./api/projects')(app, cqrsRuntime.bus);

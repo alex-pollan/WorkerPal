@@ -2,40 +2,49 @@
 var cqrs = require('./core');
 var Datastore = require('nedb');
 
-var NedbEventStore = function (eventPublisher) {
-	this.publisher = eventPublisher;
-	this.lastDbPath = '';
-};
+var NedbEventStore = cqrs.EventStore.extend(function (base) {
+    return {
+        init: function (eventPublisher) {
+            base.init.call(this);
+            this.publisher = eventPublisher;
+        },
+        loadDb : function (dbPath) {
+            this.db = new Datastore({ filename: dbPath, autoload: true });
+        },
+        loadEventSource: function(aggregateId, callback) {
+            this.db.findOne({ aggregateId: aggregateId }, function (err, doc) {
+                if (err) {
+                    console.log('NedbEventStore:loadEventSource. Error: ' + err);
+                };
+  
+                callback(err, doc);
+            });
+        },
+        createEventSource: function (aggregateId, callback) {
+            var eventsSource = {
+        		aggregateId: aggregateId,
+        		eventDescriptors: []
+            };
 
-//TODO: segment database per users?
-cqrs.EventStore.prototype.loadDb = function (dbPath) {
-	if (dbPath !== this.lastDbPath) {
-		console.log('NedbEventStore:: Loading DB "' + dbPath + '"...');
-		this.db = new Datastore({ filename: dbPath, autoload: true });
-	}
-};
-
-NedbEventStore.inheritsFrom(cqrs.EventStore);
-
-//NedbEventStore.prototype.loadEventSource = function (aggregateId) {
-//	//TODO: db
-//};
-
-//NedbEventStore.prototype.createEventSource = function (aggregateId) {
-//	var eventsSource = {
-//		aggregateId: aggregateId,
-//		eventDescriptors: []
-//	};
-    
-    
-
-//	return eventsSource;
-//};
-
-//NedbEventStore.prototype.addEvent = function (aggregateId, eventDescriptor) {
-//	//TODO: db
-//	//eventsSource.eventDescriptors.push(eventDescriptor);
-//};
+            this.db.insert(eventsSource, function (err, newDoc) {
+                if (err) {
+                    console.log('NedbEventStore:createEventSource. Error: ' + err);
+                };
+                
+                callback(err, eventsSource);
+            });
+        },
+        addEvent: function (aggregateId, eventDescriptor, callback) {
+            this.db.update({ aggregateId: aggregateId }, { $push: { eventDescriptors: eventDescriptor } }, {}, function (err, numReplaced, upsert) {
+                if (err) {
+                    console.log('NedbEventStore:createEventSource. Error: ' + err);
+                };
+                
+                callback(err);
+            });
+        }
+    };
+});
 
 module.exports = {
 	EventStore: NedbEventStore

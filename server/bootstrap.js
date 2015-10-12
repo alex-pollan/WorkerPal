@@ -9,30 +9,15 @@ var projectDomain = require('./domain/projects/domain');
 var projectCommands = require('./domain/projects/commands');
 var projectDenormalizers = require('./readModels/projects/denormalizers');
 
-module.exports = function(context) {
+module.exports = function() {
     var bus = new cqrs.Bus();
 	var eventStore = new nedbEventStore.EventStore(bus);
     var projectRepository = new cqrs.Repository(projectDomain.Project, eventStore);
     bus.registerHandlers(new projectCommands.CommandHandlers(projectRepository));
     bus.registerHandlers(new projectDenormalizers.EventHandlers());
     
-    context.onUserAuthenticated(function (user) {
-        eventStore.loadDb(config.nedb.path.replace('{0}', user.id));
-    });
-
-//     bus.send({
-//         commandName: 'CreateProject',
-//         id: 'guid1',
-//         name: 'Project 1'
-//     });
-// 
-//     bus.send({
-//         commandName: 'AssignProject',
-//         id: 'guid1',
-//         userId: 'userId1',
-//         expectedVersion: 0
-//     });
-
+    eventStore.loadDb(config.nedb.eventsSource);
+    
     return {
         bus: bus
     };

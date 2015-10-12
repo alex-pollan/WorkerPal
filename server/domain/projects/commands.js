@@ -15,28 +15,48 @@ var CreateProject = function(id, name, description, userId) {
         userId: userId        
     };
 };
-CreateProject.prototype.commandName = 'ProjectCreated';
+CreateProject.prototype.commandName = 'CreateProject';
 
-
+var ChangeName = function (id, name, expectedVersion) {
+    if (!id) throw new Error('Id expected');
+    
+    return {
+        commandName: ChangeName.prototype.commandName,
+        id: id,
+        name: name,
+        expectedVersion: expectedVersion
+    };
+};
+ChangeName.prototype.commandName = 'ProjectChangeName';
 
 var CommandHandlers = function(repository) {
     return  {
-        handleCreateProject: function(command) {
+        handleCreateProject: function(command, callback) {
             var project = new domain.Project();
             project.construct(command.id, command.name, command.description, command.userId);
-            repository.save(project, -1);
+            repository.save(project, -1, function (err) { 
+                callback(err);
+            });
         },
-        handleAssignProject: function(command) {
-            var project = repository.getById(command.id);
-            project.assignTo(command.userId);
-            repository.save(project, command.expectedVersion);
-            console.log('handleAssignProject called...');
+        handleProjectChangeName: function (command, callback) {
+            console.log('handleProjectChangeName called...');
+            var project = repository.getById(command.id, function (err, project) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+                project.changeName(command.name);
+                repository.save(project, command.expectedVersion, function (err) {
+                    callback(err);
+                });
+            });
         }
     };
 };
 module.exports = {
     CommandHandlers: CommandHandlers,
     Commands: {
-        CreateProject
+        CreateProject: CreateProject,
+        ChangeName: ChangeName
     }
 };

@@ -23,6 +23,7 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="public\index.html" />
+    <Compile Include="server\api\projects.js" />
     <Compile Include="server\authorize.js" />
     <Compile Include="server\cqrs\nedbEventStore.js" />
     <Compile Include="server\server.js" />

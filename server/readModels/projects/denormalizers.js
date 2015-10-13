@@ -4,19 +4,44 @@
 
 var domain = require('./../../domain/projects/domain');
 var q = require('q');
+var Datastore = require('nedb');
 
-var EventHandlers = function() {
-    return  {
-        handleProjectCreated: function(event) {
+var EventHandlers = function (dbPath) {
+    var db = new Datastore({ filename: dbPath, autoload: true });
+    
+    return {
+        handleProjectCreated: function (event, callback) {
             console.log('handleProjectCreated called...');
-            return q.delay(50);
+            
+            db.update({ $and : [{ type: 'project', id: event.id }] }, 
+            {
+                type: 'project',
+                id: event.id,
+                name: event.name,
+                description: event.description,
+                userId: event.userId,
+                created: event.timestamp,
+                modified: event.timestamp,
+                version: event.version
+            }, 
+            { upsert: true }, 
+            function (err, numReplaced, upsert) {
+                callback(err);
+            });
         },
-        handleProjectNameChanged: function(event) {
+        handleProjectNameChanged: function (event, callback) {
             console.log('handleProjectNameChanged called...');
-            return q.delay(50);
+            
+            db.update({ $and : [{ type: 'project', id: event.id }] }, 
+            { $set: { name: event.name, modified: event.timestamp, version: event.version } }, 
+            {}, 
+            function (err, numReplaced, upsert) {
+                callback(err);
+            });
         }
     };
 };
+
 module.exports = {
     EventHandlers: EventHandlers
 };

@@ -152,22 +152,19 @@ var EventHandlersQueue = Fiber.extend(function () {
             
             var handlerEntry = this.queue[0];
             try {
-                var promise = handlerEntry.handler(handlerEntry.event);
-                
-                if (!promise || !promise.then) {
-                    throw new Error('Expected a promise from handler of event ' + handlerEntry.event.eventName);
-                }
-                
-                promise.then(function () {
+                handlerEntry.handler(handlerEntry.event, function (err) {
+                    if (err) {
+                        console.error('Event ' + handlerEntry.event.eventName + ' threw an error: ' + err);
+                        //TODO: should stop?
+                    }
+                    
+                    //TODO: keep track of last event processed?
                     _.pullAt(_this.queue, 0);
                     _this.processNext();
-                    console.info('Event ' + handlerEntry.event.eventName + ' processed...');
-                }, function (e) {
-                    console.error('Event ' + handlerEntry.event.eventName + ' threw an error: ' + e);
                 });
             }
-            catch (e) {
-                console.error('Event ' + handlerEntry.event.eventName + ' could not be processed: ' + e);
+            catch (err) {
+                console.error('Event ' + handlerEntry.event.eventName + ' could not be processed: ' + err);
             }
         },
         processNext : function () {

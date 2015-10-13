@@ -14,7 +14,7 @@ module.exports = function() {
 	var eventStore = new nedbEventStore.EventStore(bus);
     var projectRepository = new cqrs.Repository(projectDomain.Project, eventStore);
     bus.registerHandlers(new projectCommands.CommandHandlers(projectRepository));
-    bus.registerHandlers(new projectDenormalizers.EventHandlers());
+    bus.registerHandlers(new projectDenormalizers.EventHandlers(config.nedb.readModel));
     
     eventStore.loadDb(config.nedb.eventsSource);
     

@@ -35,7 +35,7 @@ module.exports = function UsersApi(app) {
             userName: loggingUser.userName
         };
         var token = jwt.sign(user, config.jwtSecretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-        return res.json({token:token});
+        return res.json({token:token, user: user});
     });
 
     // route to log out

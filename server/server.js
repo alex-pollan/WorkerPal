@@ -26,11 +26,13 @@ app.use(jwt({
     }
 }));
 
-var cqrsRuntime = require('./bootstrap')();
+var Datastore = require('nedb');
+var readModelDb = new Datastore({ filename: config.nedb.readModel, autoload: true });
 
+var cqrsRuntime = require('./bootstrap')(readModelDb);
 
 require('./api/login')(app);
-require('./api/projects')(app, cqrsRuntime.bus);
+require('./api/projects')(app, cqrsRuntime.bus, readModelDb);
 
 var server = app.listen(8080, function () {    
     console.log('App listening at http...');

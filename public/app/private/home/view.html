@@ -1,1 +1,10 @@
-Welcome <span ng-bind="user.name"></span>
+<h2>Projects</h2>
+
+<div>
+    <ul>
+        <li ng-repeat="project in projects">
+            <h3 ng-bind="project.name"></h3>
+            <p ng-bind="project.description"></p>
+        </li>
+    </ul>
+</div>

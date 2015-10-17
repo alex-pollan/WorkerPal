@@ -4,11 +4,8 @@
 
 var domain = require('./../../domain/projects/domain');
 var q = require('q');
-var Datastore = require('nedb');
 
-var EventHandlers = function (dbPath) {
-    var db = new Datastore({ filename: dbPath, autoload: true });
-    
+var EventHandlers = function (db) {
     return {
         handleProjectCreated: function (event, callback) {
             console.log('handleProjectCreated called...');

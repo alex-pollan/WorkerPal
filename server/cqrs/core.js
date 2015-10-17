@@ -9,7 +9,7 @@ var Fiber = require('fiber');
 var Clock = Fiber.extend(function () {
     return {
         getDate: function () {
-            return new Date().getUTCDate();
+            return new Date();
         }
     };
 });
@@ -21,6 +21,12 @@ var Bus = Fiber.extend(function () {
         init: function () {
             this._handlePrefix = 'handle';
             this._routes = [];
+            this.commandHandlerQueue = async.queue(function (task, callback) {
+                console.log('Processing enqueued handler for command ' + task.name);
+                task.handler(function (err) {
+                    callback(err);
+                });                
+            }, 1);
         },
         registerHandlers: function (handlers) {
             var _this = this;
@@ -59,14 +65,14 @@ var Bus = Fiber.extend(function () {
                 }
             }
         },
-        send: function (command, callback) {
+        send: function (command, commandHandledCallback) {
             var _this = this;
             
             if (!command) {
                 throw new Error('Command expected');
             }
             
-            callback = callback || function () { };
+            commandHandledCallback = commandHandledCallback || function () { };
             
             var route = _.find(_this._routes, function (route) {
                 return route.messageName === command.commandName;
@@ -78,7 +84,14 @@ var Bus = Fiber.extend(function () {
             if (route.handlers.length != 1)
                 throw new Error('cannot send to more than one handler');
             
-            route.handlers[0](command, callback);
+            this.commandHandlerQueue.push({
+                name: command.commandName, 
+                handler: function (queueCallback) {
+                    route.handlers[0](command, queueCallback);
+                }
+            }, function (err) {
+                commandHandledCallback(err);
+            });
         },
         handleEvent: function (handler, evnt) {
             throw new Error('Not implemented');
@@ -95,14 +108,13 @@ var Bus = Fiber.extend(function () {
             });
             
             if (route) {
-                for (var i = 0; l = route.handlers.length, i < l; i++) {
-                    _this.handleEvent(route.handlers[i], evnt);
-                }
+                _.each(route.handlers, function (handler) {
+                    _this.handleEvent(handler, evnt);
+                });
             }
             
             callback(null);
-        },
-
+        }
     };
 });
 
@@ -110,69 +122,22 @@ var InMemoryBus = Bus.extend(function (base) {
     return {
         init: function () {
             base.init.call(this);
-            this.eventHandlersQueue = new EventHandlersQueue();
-            this.eventHandlersQueue.start();
+            this.eventHandlerQueue = async.queue(function (task, callback) {
+                console.log('Processing enqueued handler for event ' + task.event.eventName);
+                               
+                task.handler(task.event, function (err) {
+                    callback(err);                      
+                });                
+            }, 1);
         },
         handleEvent: function (handler, event) {
-            this.eventHandlersQueue.enqueue(handler, event);
-        }
-    };
-});
-
-//endregion
-
-//region EventHandlersQueue
-//REFACTOR: use 'async' module instead
-var EventHandlersQueue = Fiber.extend(function () {
-    return {
-        init: function () {
-            this.queue = [];
-            this.started = false;
-            this.interval = 500;
-        },
-        enqueue: function (handler, event) {
-            this.queue.push({ handler : handler, event : event });
-        },
-        start: function () {
-            var _this = this;
-            
-            if (this.started) return;
-            
-            this.processNext();
-            
-            this.started = true;
-        },
-        process : function () {
-            var _this = this;
-            
-            if (this.queue.length == 0) {
-                this.processNext();
-                return;
-            }
-            
-            var handlerEntry = this.queue[0];
-            try {
-                handlerEntry.handler(handlerEntry.event, function (err) {
-                    if (err) {
-                        console.error('Event ' + handlerEntry.event.eventName + ' threw an error: ' + err);
-                        //TODO: should stop?
-                    }
-                    
-                    //TODO: keep track of last event processed?
-                    _.pullAt(_this.queue, 0);
-                    _this.processNext();
-                });
-            }
-            catch (err) {
-                console.error('Event ' + handlerEntry.event.eventName + ' could not be processed: ' + err);
-            }
-        },
-        processNext : function () {
-            var _this = this;
-            
-            setTimeout(function () {
-                _this.process();
-            }, this.interval);
+            this.eventHandlerQueue.push({ handler: handler, event: event }, function (err) {
+                if (err) {
+                    console.error('Event ' + task.event.eventName + ' threw an error: ' + err);
+                    return;
+                }
+                //TODO: keep track of last event processed to reprocess at restart aggregate's events in case of error? 
+            });
         }
     };
 });
@@ -255,10 +220,9 @@ var EventStore = Fiber.extend(function () {
                             processEventsCallback(err, eventsSource);
                         });
                     }
-            // check whether latest event version matches current aggregate version
-            // otherwise -> throw exception
-                    else if (eventsSource.eventDescriptors[eventsSource.eventDescriptors.length - 1].version != expectedVersion 
-                        && expectedVersion != -1) {
+                    // check whether latest event version matches current aggregate version
+                    // otherwise -> throw exception
+                    else if (eventsSource.eventDescriptors[eventsSource.eventDescriptors.length - 1].version != expectedVersion) {
                         processEventsCallback(new Error('ConcurrencyException'), null);
                     }
                     else {
@@ -310,39 +274,7 @@ var EventStore = Fiber.extend(function () {
                     console.log(err);
                 }
                 saveEventsCallback(err);
-            });
-            
-            //// try to get event descriptors list for given aggregate id
-            //// otherwise -> create empty dictionary
-            //var eventsSource = this.loadEventSource(aggregateId);
-
-            //if (!eventsSource) {
-            //    eventsSource = this.createEventSource(aggregateId);
-            //}
-            //// check whether latest event version matches current aggregate version
-            //// otherwise -> throw exception
-            //else if (eventsSource.eventDescriptors[eventsSource.eventDescriptors.length - 1].version != expectedVersion
-            //        && expectedVersion != -1) {
-            //    throw new Error('ConcurrencyException');
-            //}
-
-            //var i = expectedVersion;
-
-            //// iterate through current aggregate events increasing version with each processed event
-            //_.each(events, function(event) {
-            //    i++;
-            //    event.version = i;
-
-            //    // push event to the event descriptors list for current aggregate
-            //    _this.addEvent(aggregateId, {
-            //        aggregateId: aggregateId,
-            //        eventData: event,
-            //        version: i
-            //    });
-
-            //    // publish current event to the bus for further processing by subscribers
-            //    _this.publisher.publish(event);
-            //});
+            });        
         },
         getEventsForAggregate: function (aggregateId, callback) {
             this.loadEventSource(aggregateId, function (err, eventSource) {

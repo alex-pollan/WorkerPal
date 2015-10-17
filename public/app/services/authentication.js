@@ -13,9 +13,13 @@
                             password: password
                         })
                         .then(function (data){
+                            var authInfo = data.data;
+                            user.id = authInfo.user.id;
+                            user.userName = authInfo.user.userName;
+                            user.Name = authInfo.user.name;                            
                             user.isAuthenticated = true;
-                            $window.sessionStorage.token = data.token;
-                            deferred.resolve(); //TODO: what to return here
+                            $window.sessionStorage.token = authInfo.token;
+                            deferred.resolve(); 
                         }, function(response){
                             deferred.reject();
                         });

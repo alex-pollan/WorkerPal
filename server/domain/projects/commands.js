@@ -40,7 +40,7 @@ var CommandHandlers = function(repository) {
         },
         handleProjectChangeName: function (command, callback) {
             console.log('handleProjectChangeName called...');
-            var project = repository.getById(command.id, function (err, project) {
+            repository.getById(command.id, function (err, project) {
                 if (err) {
                     callback(err);
                     return;

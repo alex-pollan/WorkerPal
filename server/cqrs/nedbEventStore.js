@@ -14,7 +14,7 @@ var NedbEventStore = cqrs.EventStore.extend(function (base) {
         loadEventSource: function(aggregateId, callback) {
             this.db.findOne({ aggregateId: aggregateId }, function (err, doc) {
                 if (err) {
-                    console.log('NedbEventStore:loadEventSource. Error: ' + err);
+                    console.error('NedbEventStore:loadEventSource. Error: ' + err);
                 };
   
                 callback(err, doc);
@@ -28,7 +28,7 @@ var NedbEventStore = cqrs.EventStore.extend(function (base) {
 
             this.db.insert(eventsSource, function (err, newDoc) {
                 if (err) {
-                    console.log('NedbEventStore:createEventSource. Error: ' + err);
+                    console.error('NedbEventStore:createEventSource. Error: ' + err);
                 };
                 
                 callback(err, eventsSource);
@@ -37,7 +37,7 @@ var NedbEventStore = cqrs.EventStore.extend(function (base) {
         addEvent: function (aggregateId, eventDescriptor, callback) {
             this.db.update({ aggregateId: aggregateId }, { $push: { eventDescriptors: eventDescriptor } }, {}, function (err, numReplaced, upsert) {
                 if (err) {
-                    console.log('NedbEventStore:createEventSource. Error: ' + err);
+                    console.error('NedbEventStore:createEventSource. Error: ' + err);
                 };
                 
                 callback(err);

@@ -12,11 +12,11 @@ var Project = cqrs.AggregateRoot.extend(function (base) {
             if (!name) throw new Error('Name expected');
             if (!userId) throw new Error('UserId expected');
             
-            this.applyChange(new events.ProjectCreated(id, name, description, userId, this.clock.getTime()));
+            this.applyChange(new events.ProjectCreated(id, name, description, userId, this.clock.getDate()));
         },
         changeName : function (name) {
             if (!name) throw new Error('Name expected');
-            this.applyChange(new events.ProjectNameChanged(this.id, name, this.clock.getTime()));
+            this.applyChange(new events.ProjectNameChanged(this.id, name, this.clock.getDate()));
         },
         applyProjectCreated : function (event) {
             this.id = event.id;

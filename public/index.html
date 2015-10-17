@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" ng-app="workerpal">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,10 @@
             <p>Login</p>
             <a ui-sref="login">With your user name and password</a>
         </div>
-        <button ng-click="logout()" ng-show="user.isAuthenticated">Logout</button>
+        <div ng-show="user.isAuthenticated">
+            <p>Welcome <span ng-bind="user.Name"></span></p>
+            <button ng-click="logout()">Logout</button>
+        </div>        
     </div>
 
     <section ui-view></section>
@@ -28,6 +31,7 @@
     <script src="app/services/authentication.js"></script>
     <script src="app/services/authorization.js"></script>
     <script src="app/services/security-interceptor.js"></script>
+    <script src="app/services/projects-service.js"></script>
 
     <script src="app/home/ctrl.js"></script>
     <script src="app/login/ctrl.js"></script>

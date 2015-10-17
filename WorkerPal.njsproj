@@ -19,10 +19,12 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Compile Include="tests\server\cmd-handling-consistency.js" />
     <Content Include="bower.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="public\index.html" />
+    <Compile Include="public\app\services\projects-service.js" />
     <Compile Include="server\api\projects.js" />
     <Compile Include="server\authorize.js" />
     <Compile Include="server\cqrs\nedbEventStore.js" />

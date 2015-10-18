@@ -11,7 +11,6 @@ var _ = require('lodash');
 
 var app = express();
 app.use(express.static('public'));
-app.use('/vendor', express.static('bower_components'));
 app.use(bodyParser.json());
 app.use(jwt({
     secret: config.jwtSecretToken,

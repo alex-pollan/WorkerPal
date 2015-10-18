@@ -8,3 +8,4 @@ bin/
 .ntvs_analysis.dat
 .vs/
 .vscode/
+dist/

@@ -22,7 +22,6 @@ var Bus = Fiber.extend(function () {
             this._handlePrefix = 'handle';
             this._routes = [];
             this.commandHandlerQueue = async.queue(function (task, callback) {
-                console.log('Processing enqueued handler for command ' + task.name);
                 task.handler(function (err) {
                     callback(err);
                 });                
@@ -59,7 +58,6 @@ var Bus = Fiber.extend(function () {
             for (var member in handlers) {
                 if (handlers.hasOwnProperty(member)) {
                     if (_.isFunction(handlers[member]) && _.startsWith(member, _this._handlePrefix)) {
-                        console.log('Found the handler: ' + member);
                         _addMessageHandler(_getMessageName(member), handlers[member]);
                     }
                 }
@@ -118,30 +116,6 @@ var Bus = Fiber.extend(function () {
     };
 });
 
-var InMemoryBus = Bus.extend(function (base) {
-    return {
-        init: function () {
-            base.init.call(this);
-            this.eventHandlerQueue = async.queue(function (task, callback) {
-                console.log('Processing enqueued handler for event ' + task.event.eventName);
-                               
-                task.handler(task.event, function (err) {
-                    callback(err);                      
-                });                
-            }, 1);
-        },
-        handleEvent: function (handler, event) {
-            this.eventHandlerQueue.push({ handler: handler, event: event }, function (err) {
-                if (err) {
-                    console.error('Event ' + task.event.eventName + ' threw an error: ' + err);
-                    return;
-                }
-                //TODO: keep track of last event processed to reprocess at restart aggregate's events in case of error? 
-            });
-        }
-    };
-});
-
 //endregion
 
 //region AggregateRoot
@@ -183,32 +157,18 @@ var EventStore = Fiber.extend(function () {
     return {
         init: function (eventPublisher) {
             this.publisher = eventPublisher;
-            this.current = [];
         },
-        setup: function () { },
         //overridable
         loadEventSource: function (aggregateId, callback) {
-            var eventSource = _.find(this.current, function (item) {
-                return item.aggregateId === aggregateId;
-            });
-            callback(null, eventSource);
+            throw new Error('Not implemented');
         },
         //overridable
         createEventSource: function (aggregateId, callback) {
-            var eventsSource = {
-                aggregateId: aggregateId,
-                eventDescriptors: []
-            };
-            this.current.push(eventsSource);
-            
-            callback(null, eventsSource);
+            throw new Error('Not implemented');
         },
         //overridable
         addEvent: function (aggregateId, eventDescriptor, callback) {
-            this.loadEventSource(aggregateId, function (err, eventsSource) {
-                eventsSource.eventDescriptors.push(eventDescriptor);
-                callback(null);
-            });
+            throw new Error('Not implemented');
         },
         saveEvents : function (aggregateId, events, expectedVersion, saveEventsCallback) {
             var _this = this;
@@ -324,7 +284,7 @@ var Repository = Fiber.extend(function () {
 //endregion
 
 module.exports = {
-    Bus: InMemoryBus,
+    Bus: Bus,
     EventStore: EventStore,
     Repository: Repository,
     AggregateRoot: AggregateRoot,

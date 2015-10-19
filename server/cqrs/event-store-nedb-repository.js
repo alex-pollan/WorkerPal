@@ -1,16 +1,11 @@
-﻿
-var cqrs = require('./core');
+﻿var Fiber = require('fiber');
 var Datastore = require('nedb');
 
-var NedbEventStore = cqrs.EventStore.extend(function (base) {
+var EventStoreNedbRepository = Fiber.extend(function (base) {
     return {
-        init: function (eventPublisher) {
-            base.init.call(this);
-            this.publisher = eventPublisher;
-        },
-        loadDb : function (dbPath) {
+        init: function (dbPath) {
             this.db = new Datastore({ filename: dbPath, autoload: true });
-        },
+        },       
         loadEventSource: function(aggregateId, callback) {
             this.db.findOne({ aggregateId: aggregateId }, function (err, doc) {
                 if (err) {
@@ -47,5 +42,5 @@ var NedbEventStore = cqrs.EventStore.extend(function (base) {
 });
 
 module.exports = {
-	EventStore: NedbEventStore
+	EventStoreRepository: EventStoreNedbRepository
 };

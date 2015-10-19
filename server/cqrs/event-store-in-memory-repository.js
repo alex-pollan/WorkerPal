@@ -1,9 +1,8 @@
-﻿var cqrs = require('./core');
+﻿var Fiber = require('fiber');
 
-var InMemoryEventStore = cqrs.EventStore.extend(function (base) {
+var EventStoreInMemoryRepository = Fiber.extend(function (base) {
     return {
-        init: function (eventPublisher) {
-            base.init.call(this, eventPublisher);
+        init: function () {
             this.current = [];
         },       
         loadEventSource: function (aggregateId, callback) {
@@ -31,5 +30,5 @@ var InMemoryEventStore = cqrs.EventStore.extend(function (base) {
 });
 
 module.exports = {
-    EventStore: InMemoryEventStore
+    EventStoreRepository: EventStoreInMemoryRepository
 };

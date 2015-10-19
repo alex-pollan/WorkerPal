@@ -155,28 +155,17 @@ var AggregateRoot = Fiber.extend(function () {
 
 var EventStore = Fiber.extend(function () {
     return {
-        init: function (eventPublisher) {
+        init: function (eventPublisher, repository) {
             this.publisher = eventPublisher;
-        },
-        //overridable
-        loadEventSource: function (aggregateId, callback) {
-            throw new Error('Not implemented');
-        },
-        //overridable
-        createEventSource: function (aggregateId, callback) {
-            throw new Error('Not implemented');
-        },
-        //overridable
-        addEvent: function (aggregateId, eventDescriptor, callback) {
-            throw new Error('Not implemented');
-        },
+            this.repository = repository;
+        },        
         saveEvents : function (aggregateId, events, expectedVersion, saveEventsCallback) {
             var _this = this;
             
             var loadEventSource = function (processEventsCallback) {
-                _this.loadEventSource(aggregateId, function (err, eventsSource) {
+                _this.repository.loadEventSource(aggregateId, function (err, eventsSource) {
                     if (!eventsSource) {
-                        _this.createEventSource(aggregateId, function (err, eventsSource) {
+                        _this.repository.createEventSource(aggregateId, function (err, eventsSource) {
                             processEventsCallback(err, eventsSource);
                         });
                     }
@@ -208,7 +197,7 @@ var EventStore = Fiber.extend(function () {
                         event.version = version;
                         
                         // push event to the event descriptors list for current aggregate
-                        _this.addEvent(aggregateId, {
+                        _this.repository.addEvent(aggregateId, {
                             aggregateId: aggregateId,
                             eventData: event,
                             version: version
@@ -237,9 +226,10 @@ var EventStore = Fiber.extend(function () {
             });        
         },
         getEventsForAggregate: function (aggregateId, callback) {
-            this.loadEventSource(aggregateId, function (err, eventSource) {
+            this.repository.loadEventSource(aggregateId, function (err, eventSource) {
                 if (!eventSource) {
                     callback(new Error('AggregateNotFoundException'), null);
+                    return;
                 }
                 
                 callback(null, _.map(eventSource.eventDescriptors, function (item) {
@@ -267,12 +257,15 @@ var Repository = Fiber.extend(function () {
             });
         },
         getById: function (id, callback) {
-            var obj = new this.constructorFunction;
+            var _this = this;
+
             this.storage.getEventsForAggregate(id, function (err, e) {
                 if (err) {
                     callback(err, null);
+                    return;
                 }
-                
+
+                var obj = _this.constructorFunction();
                 obj.loadsFromHistory(e);
                 
                 callback(null, obj);

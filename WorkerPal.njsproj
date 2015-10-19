@@ -22,9 +22,10 @@
     <Compile Include="gulp-jasmine-node.js" />
     <Compile Include="Gulpfile.js" />
     <Compile Include="server\cqrs\in-memory-bus.js" />
-    <Compile Include="server\cqrs\in-memory-event-store.js" />
+    <Compile Include="server\cqrs\event-store-in-memory-repository.js" />
     <Compile Include="spec\server\cmd-handling-consistency.js" />
     <Compile Include="spec\server\in-memory-bus-spec.js" />
+    <Compile Include="spec\server\repository-spec.js" />
     <Content Include="bower.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -32,7 +33,7 @@
     <Compile Include="public\app\services\projects-service.js" />
     <Compile Include="server\api\projects.js" />
     <Compile Include="server\authorize.js" />
-    <Compile Include="server\cqrs\nedb-event-store.js" />
+    <Compile Include="server\cqrs\event-store-nedb-repository.js" />
     <Compile Include="server\server.js" />
     <Compile Include="public\app\app.js" />
     <Compile Include="public\app\login-ctrl.js" />

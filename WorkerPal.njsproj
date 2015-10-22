@@ -19,7 +19,6 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
-    <Compile Include="gulp-jasmine-node.js" />
     <Compile Include="Gulpfile.js" />
     <Compile Include="server\cqrs\in-memory-bus.js" />
     <Compile Include="server\cqrs\event-store-in-memory-repository.js" />

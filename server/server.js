@@ -33,6 +33,6 @@ var cqrsRuntime = require('./bootstrap')(readModelDb);
 require('./api/login')(app);
 require('./api/projects')(app, cqrsRuntime.bus, readModelDb);
 
-var server = app.listen(8080, function () {    
+var server = app.listen(process.env.PORT, function () {    
     console.log('App listening at http...');
 });

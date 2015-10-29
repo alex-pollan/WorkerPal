@@ -15,6 +15,7 @@
     <EnableTypeScript>true</EnableTypeScript>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <NameOfLastUsedPublishProfile>deploy-local</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -26,6 +27,9 @@
     <Compile Include="spec\server\in-memory-bus-spec.js" />
     <Compile Include="spec\server\repository-spec.js" />
     <Content Include="bower.json" />
+    <Content Include="web.config" />
+    <None Include="deploy.pubxml" />
+    <None Include="deploy-local.pubxml" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="public\index.html" />

@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='test' AfterBuild='default' />
+﻿/// <binding BeforeBuild='test, uglifyJs' />
 var gulp = require('gulp');
 var bower = require('gulp-bower');
 var concat = require('gulp-concat');
@@ -7,6 +7,8 @@ var jasminen = require('gulp-jasmine-node');
 var uglify = require('gulp-uglify');
 var minifyCss = require('gulp-minify-css');
 var sourcemaps = require('gulp-sourcemaps');
+var del = require('del');
+var vinylPaths = require('vinyl-paths');
 
 gulp.task('bower', function () {
     return bower('./bower_components');
@@ -23,7 +25,7 @@ gulp.task('updateLibs', ['bower'], function () {
         .pipe(gulp.dest('public/dist/angular'));
 });
 
-gulp.task('uglifyJs', function () {
+gulp.task('uglifyJs', ['updateLibs'], function () {
     return gulp.src('public/app/**/*.js')
         .pipe(sourcemaps.init())
             .pipe(concat('public/dist/app-all.min.js'))
@@ -34,15 +36,29 @@ gulp.task('uglifyJs', function () {
 
 gulp.task('minifyCss', function () {
     return gulp.src('public/styles/**/*.css')
-        .pipe(sourcemaps.init())
         .pipe(minifyCss())        
         .pipe(gulp.dest('public/dist'));
 });
-
-gulp.task('default', ['minifyCss', 'uglifyJs']);
 
 gulp.task('test', function () {
     return gulp.src(['spec/**/*spec.js']).pipe(jasminen({
         timeout: 10000
     }));
+});
+
+gulp.task('clean-deploy', function (cb) {
+    del(['deploy/**', '!deploy']).then(function () {
+        cb();
+    });
+});
+
+gulp.task('deploy', ['clean-deploy', 'minifyCss', 'uglifyJs'], function () {
+    gulp.src(['public/**/*.html','public/**/*.css', 'public/dist/**/*.min.js', 'public/dist/**/*.js.map'], {base: 'public'})
+        .pipe(gulp.dest('deploy/public'));
+    gulp.src(['server/**/*.js'], { base: 'server' })
+        .pipe(gulp.dest('deploy/server'));
+    gulp.src(['node_modules/**/*.*'], { base: 'node_modules' })
+        .pipe(gulp.dest('deploy/node_modules'));
+    gulp.src(['server.js', 'web.config'])
+        .pipe(gulp.dest('deploy'));
 });

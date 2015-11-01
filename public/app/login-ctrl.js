@@ -4,13 +4,14 @@
 (function(window){
     'use strict';
 
-    window.app.controller('LoginPanelController', ['$scope','user', 'authentication',
-        function($scope, user, authentication){
+    window.app.controller('LoginPanelController', ['$scope','$state', 'user', 'authentication',
+        function($scope, $state, user, authentication){
 
             $scope.user = user;
 
             $scope.logout = function(){
                 authentication.logout();
+                $state.go('home');
             };
     }]);
 })(window);

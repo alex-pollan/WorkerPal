@@ -30,7 +30,7 @@
                     var that = this;
 
                     $http
-                        .post('/api/logout')
+                        .post('api/logout')
                         .then(function (response){
                             user.isAuthenticated = false;
                             delete $window.sessionStorage.token;

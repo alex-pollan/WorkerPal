@@ -2,11 +2,11 @@
  * Created by Alex on 9/21/2015.
  */
 
-var config = require('./config/config');
+var config = require('./server/config/config');
 var express = require('express');
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
-var authorize = require('./authorize');
+var authorize = require('./server/authorize');
 var _ = require('lodash');
 
 var app = express();
@@ -28,10 +28,21 @@ app.use(jwt({
 var Datastore = require('nedb');
 var readModelDb = new Datastore({ filename: config.nedb.readModel, autoload: true });
 
-var cqrsRuntime = require('./bootstrap')(readModelDb);
+var cqrsRuntime = require('./server/bootstrap')(readModelDb);
 
-require('./api/login')(app);
-require('./api/projects')(app, cqrsRuntime.bus, readModelDb);
+
+if (process.env.deployPath) {
+    app.all('*', function (req, res, next) {
+        if (_.startsWith(req.url, process.env.deployPath + '/api')) {
+            req.url = req.url.replace(process.env.deployPath, '');
+        }
+
+        next();
+    });
+}
+
+require('./server/api/login')(app);
+require('./server/api/projects')(app, cqrsRuntime.bus, readModelDb);
 
 var server = app.listen(process.env.PORT, function () {    
     console.log('App listening at http...');

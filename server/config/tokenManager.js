@@ -1,8 +1,7 @@
 /**
  * Created by Alex on 9/26/2015.
  */
-var TOKEN_EXPIRATION = 60;
-var TOKEN_EXPIRATION_SEC = TOKEN_EXPIRATION * 60;
+var TOKEN_EXPIRATION = 3600;
 
 // Middleware for token verification
 exports.verifyToken = function (req, res, next) {
@@ -40,4 +39,3 @@ var getToken = function(headers) {
 };
 
 exports.TOKEN_EXPIRATION = TOKEN_EXPIRATION;
-exports.TOKEN_EXPIRATION_SEC = TOKEN_EXPIRATION_SEC;

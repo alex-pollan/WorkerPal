@@ -27,14 +27,14 @@ module.exports = function UsersApi(app) {
            return user.userName === userName && user.password === password;  
         });
 
-        if (!loggingUser) return res.send(401);
+        if (!loggingUser) return res.sendStatus(401);
 
         var user = {
             id: loggingUser.id, 
             name: loggingUser.Name,
             userName: loggingUser.userName
         };
-        var token = jwt.sign(user, config.jwtSecretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+        var token = jwt.sign(user, config.jwtSecretToken, { expiresIn: tokenManager.TOKEN_EXPIRATION });
         return res.json({token:token, user: user});
     });
 
@@ -43,11 +43,11 @@ module.exports = function UsersApi(app) {
         if (req.user) {
             tokenManager.expireToken(req.headers);
             delete req.user;
-            res.send(200);
+            res.sendStatus(200);
         }
         else
         {
-            return res.send(401);
+            return res.sendStatus(401);
         }
     });
 };

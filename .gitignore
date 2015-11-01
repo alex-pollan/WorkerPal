@@ -1,6 +1,7 @@
 .idea/
 bower_components/
 build/
+deploy/
 node_modules/
 obj/
 bin/

@@ -16,17 +16,23 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <NameOfLastUsedPublishProfile>deploy-local</NameOfLastUsedPublishProfile>
+    <NodejsPort>1756</NodejsPort>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
     <Compile Include="Gulpfile.js" />
+    <Compile Include="public\app\services\config.js" />
+    <Compile Include="public\app\services\facebook-init.js" />
+    <Compile Include="public\app\services\facebook-service.js" />
+    <Compile Include="public\app\services\state-provider-decorator.js" />
     <Compile Include="server\cqrs\in-memory-bus.js" />
     <Compile Include="server\cqrs\event-store-in-memory-repository.js" />
     <Compile Include="spec\server\cmd-handling-consistency.js" />
     <Compile Include="spec\server\in-memory-bus-spec.js" />
     <Compile Include="spec\server\repository-spec.js" />
     <Content Include="bower.json" />
+    <Content Include="public\app\channel.html" />
     <Content Include="web.config" />
     <Content Include="package.json" />
     <Content Include="README.md" />

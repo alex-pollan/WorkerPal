@@ -8,36 +8,42 @@
     <!--TODO: to directive-->
     <div ng-controller="LoginPanelController">
         <div ng-show="!user.isAuthenticated">
-            <p>Login</p>
-            <a ui-sref="login">With your user name and password</a>
+            <a ui-sref="login">Login</a>
         </div>
         <div ng-show="user.isAuthenticated">
             <p>Welcome <span ng-bind="user.Name"></span></p>
             <button ng-click="logout()">Logout</button>
-        </div>        
+        </div>
     </div>
 
     <section ui-view></section>
+
+    <div id="fb-root"></div>
+
 
     <script src="dist/angular/angular.min.js"></script>
     <script src="dist/angular/angular-route.min.js"></script>
     <script src="dist/angular/angular-ui-router.min.js"></script>
     <script src="dist/angular/angular-resource.min.js"></script>
 
-    <script src="dist/app-all.min.js"></script>
-    
-    <!--<script src="app/app.js"></script>
+    <!--<script src="dist/app-all.min.js"></script>-->
+
+    <script src="app/app.js"></script>
     <script src="app/login-ctrl.js"></script>
 
+    <script src="app/services/config.js"></script>
     <script src="app/services/user.js"></script>
     <script src="app/services/authentication.js"></script>
     <script src="app/services/authorization.js"></script>
     <script src="app/services/security-interceptor.js"></script>
     <script src="app/services/projects-service.js"></script>
+    <script src="app/services/state-provider-decorator.js"></script>
+    <script src="app/services/facebook-init.js"></script>
+    <script src="app/services/facebook-service.js"></script>
 
     <script src="app/home/ctrl.js"></script>
     <script src="app/login/ctrl.js"></script>
-    
-    <script src="app/private/home/ctrl.js"></script>-->
+
+    <script src="app/private/home/ctrl.js"></script>
 </body>
 </html>

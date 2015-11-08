@@ -4,8 +4,8 @@
 (function(window){
     'use strict';
 
-    window.app.service('authorization', ['$q', '$state', '$timeout', '$window',
-        function($q, $state, $timeout, $window) {
+    window.app.service('authorization', ['$q', '$state', '$timeout', '$window', '$log',
+        function($q, $state, $timeout, $window, $log) {
             return {
                 authorize: function(){
                     // Initialize a new promise
@@ -13,10 +13,12 @@
 
                     $timeout(function(){
                         if ($window.sessionStorage.token) {
+                            $log.info('Authorized');
                             deferred.resolve();
                         }
                         else {
                             deferred.reject();
+                            $log.info('Unauthorized');
                             $state.go('login');
                         }
                     }, 10);

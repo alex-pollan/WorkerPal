@@ -6,7 +6,6 @@
 
     window.app.controller('LoginPanelController', ['$scope','$state', 'user', 'authentication',
         function($scope, $state, user, authentication){
-
             $scope.user = user;
 
             $scope.logout = function(){
@@ -14,4 +13,5 @@
                 $state.go('home');
             };
     }]);
+
 })(window);

@@ -9,16 +9,14 @@ var tokenManager = require('../config/tokenManager');
 module.exports = function UsersApi(app) {
     
     var users = [
-        {id: '2e4adbbc-3942-4083-8e4e-84bf6cdf32c7', userName: 'alex', password: 'alex', Name:'Alex'},
-        {id: '2e4adbbc-3942-4083-8e4e-84bf6cdf32c8', userName: 'ro', password: 'ro', Name: 'Rocio'}
+        {id: '2e4adbbc-3942-4083-8e4e-84bf6cdf32c7', userName: 'alex', password: 'alex', Name:'Alex', email: 'alexpollan@yahoo.com'},
+        {id: '2e4adbbc-3942-4083-8e4e-84bf6cdf32c8', userName: 'ro', password: 'ro', Name: 'Rocio', email: 'rocio372@hotmail.com'}
     ];
 
-    // route to test if the user is logged in or not
     app.get('/api/loggedin', function(req, res) {
         res.send(req.isAuthenticated() ? req.user : '0');
     });
 
-    // route to log in
     app.post('/api/login', function(req, res) {
         var userName = req.body.username,
             password = req.body.password;
@@ -32,13 +30,32 @@ module.exports = function UsersApi(app) {
         var user = {
             id: loggingUser.id, 
             name: loggingUser.Name,
-            userName: loggingUser.userName
+            userName: loggingUser.userName,
+            email: loggingUser.email
         };
         var token = jwt.sign(user, config.jwtSecretToken, { expiresIn: tokenManager.TOKEN_EXPIRATION });
-        return res.json({token:token, user: user});
+        return res.json({token:token, user: user, authType: 'app'});
+    });
+    
+    app.post('/api/loginFb', function (req, res) {
+        var email = req.body.email;
+        
+        var loggingUser = _.find(users, function (user) {
+            return user.email === email;
+        });
+        
+        if (!loggingUser) return res.sendStatus(401);
+        
+        var user = {
+            id: loggingUser.id, 
+            name: loggingUser.Name,
+            userName: loggingUser.userName,
+            email: loggingUser.email            
+        };
+        var token = jwt.sign(user, config.jwtSecretToken, { expiresIn: tokenManager.TOKEN_EXPIRATION });
+        return res.json({ token: token, user: user, authType: 'fb' });
     });
 
-    // route to log out
     app.post('/api/logout', function(req, res){
         if (req.user) {
             tokenManager.expireToken(req.headers);

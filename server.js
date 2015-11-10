@@ -28,12 +28,12 @@ app.use(jwt({
 var Datastore = require('nedb');
 var readModelDb = new Datastore({ filename: config.nedb.readModel, autoload: true });
 
-var cqrsRuntime = require('./server/bootstrap')(readModelDb);
-
+var cqrsRuntime = require('./server/bootstrap')(readModelDb); 
 
 if (process.env.deployPath) {
     app.all('*', function (req, res, next) {
-        if (_.startsWith(req.url, process.env.deployPath + '/api')) {
+        if (_.startsWith(req.url, process.env.deployPath + '/api')
+            || _.startsWith(req.url, process.env.deployPath + '/capi')) {
             req.url = req.url.replace(process.env.deployPath, '');
         }
 
@@ -42,7 +42,8 @@ if (process.env.deployPath) {
 }
 
 require('./server/api/login')(app);
-require('./server/api/projects')(app, cqrsRuntime.bus, readModelDb);
+require('./server/api/projects')(app, readModelDb); //TODO: use repo instead
+require('./server/capi/projects')(app, cqrsRuntime.bus);
 
 var server = app.listen(process.env.PORT, function () {    
     console.log('App listening at http...');

@@ -26,6 +26,7 @@
     <Compile Include="public\app\services\facebook-init.js" />
     <Compile Include="public\app\services\facebook-service.js" />
     <Compile Include="public\app\services\state-provider-decorator.js" />
+    <Compile Include="server\capi\projects.js" />
     <Compile Include="server\cqrs\in-memory-bus.js" />
     <Compile Include="server\cqrs\event-store-in-memory-repository.js" />
     <Compile Include="spec\server\cmd-handling-consistency.js" />
@@ -80,6 +81,7 @@
     <Folder Include="server\domain" />
     <Folder Include="server\domain\projects" />
     <Folder Include="server\cqrs\" />
+    <Folder Include="server\capi\" />
     <Folder Include="server\readModels" />
     <Folder Include="server\readModels\projects" />
     <Folder Include="spec\" />

@@ -10,12 +10,12 @@ var projectDomain = require('./domain/projects/domain');
 var projectCommands = require('./domain/projects/commands');
 var projectDenormalizers = require('./readModels/projects/denormalizers');
 
-module.exports = function(readModelDb) {
+module.exports = function(projectsReadModelRepository) {
     var bus = new inMemoryBus.Bus();
 	var eventStore = new cqrs.EventStore(bus, new eventStoreNeDbRepository.EventStoreRepository(config.nedb.eventsSource));
     var projectRepository = new cqrs.Repository(function () { return new projectDomain.Project(); }, eventStore);
     bus.registerHandlers(new projectCommands.CommandHandlers(projectRepository));
-    bus.registerHandlers(new projectDenormalizers.EventHandlers(readModelDb));
+    bus.registerHandlers(new projectDenormalizers.EventHandlers(projectsReadModelRepository));
     
     return {
         bus: bus

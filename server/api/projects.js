@@ -1,11 +1,10 @@
 var authorize = require('../authorize');
 var Datastore = require('nedb');
 
-module.exports = function ProjectsApi(app, readModelDb) {
-    //TODO: abstract the data access with a repository pattern
+module.exports = function ProjectsApi(app, repository) {
 
     app.get('/api/projects/:projectId', authorize, function (req, res) {
-        readModelDb.findOne({ $and : [{ type: 'project', userId: req.user.id, id: req.params.projectId }] }, function (err, doc) {
+        repository.get(req.params.projectId, req.user.id, function (err, doc) {
             if (err) {
                 console.log('ProjectsApi: Error: ' + err);
                 res.sendStatus(500);
@@ -17,7 +16,7 @@ module.exports = function ProjectsApi(app, readModelDb) {
     });
     
     app.get('/api/projects', authorize, function (req, res) {
-        readModelDb.find({ $and : [{ type: 'project', userId: req.user.id }] }, function (err, docs) {
+        repository.query({ userId: req.user.id }, function (err, docs) {
             if (err) {
                 console.log('ProjectsApi: Error: ' + err);
                 res.sendStatus(500);

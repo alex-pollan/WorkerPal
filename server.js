@@ -25,11 +25,6 @@ app.use(jwt({
     }
 }));
 
-var Datastore = require('nedb');
-var readModelDb = new Datastore({ filename: config.nedb.readModel, autoload: true });
-
-var cqrsRuntime = require('./server/bootstrap')(readModelDb); 
-
 if (process.env.deployPath) {
     app.all('*', function (req, res, next) {
         if (_.startsWith(req.url, process.env.deployPath + '/api')
@@ -41,8 +36,11 @@ if (process.env.deployPath) {
     });
 }
 
+var projectsReadModelRepository = require('./server/readModels/projects/repository')(config); 
+var cqrsRuntime = require('./server/bootstrap')(projectsReadModelRepository); 
+
 require('./server/api/login')(app);
-require('./server/api/projects')(app, readModelDb); //TODO: use repo instead
+require('./server/api/projects')(app, projectsReadModelRepository);
 require('./server/capi/projects')(app, cqrsRuntime.bus);
 
 var server = app.listen(process.env.PORT, function () {    

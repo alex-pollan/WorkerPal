@@ -29,8 +29,10 @@
     <Compile Include="server\capi\projects.js" />
     <Compile Include="server\cqrs\in-memory-bus.js" />
     <Compile Include="server\cqrs\event-store-in-memory-repository.js" />
+    <Compile Include="server\readModels\projects\repository.js" />
     <Compile Include="spec\server\cmd-handling-consistency.js" />
     <Compile Include="spec\server\in-memory-bus-spec.js" />
+    <Compile Include="spec\server\projects\denormalizers-spec.js" />
     <Compile Include="spec\server\repository-spec.js" />
     <Content Include="bower.json" />
     <Content Include="public\app\channel.html" />
@@ -87,6 +89,7 @@
     <Folder Include="spec\" />
     <Folder Include="spec\public\" />
     <Folder Include="spec\server\" />
+    <Folder Include="spec\server\projects\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->

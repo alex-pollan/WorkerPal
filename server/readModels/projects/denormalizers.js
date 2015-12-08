@@ -1,18 +1,12 @@
 /**
  * Created by Alex on 10/5/2015.
  */
-
-var domain = require('./../../domain/projects/domain');
-var q = require('q');
-
-var EventHandlers = function (db) {
+var EventHandlers = function (repository) {
     return {
         handleProjectCreated: function (event, callback) {
             console.log('handleProjectCreated called...');
             
-            db.update({ $and : [{ type: 'project', id: event.id }] }, 
-            {
-                type: 'project',
+            repository.upsert(event.id, {
                 id: event.id,
                 name: event.name,
                 description: event.description,
@@ -21,18 +15,19 @@ var EventHandlers = function (db) {
                 modified: event.timestamp,
                 version: event.version
             }, 
-            { upsert: true }, 
-            function (err, numReplaced, upsert) {
+            function (err) {
                 callback(err);
-            });
+            });            
         },
         handleProjectNameChanged: function (event, callback) {
             console.log('handleProjectNameChanged called...');
             
-            db.update({ $and : [{ type: 'project', id: event.id }] }, 
-            { $set: { name: event.name, modified: event.timestamp, version: event.version } }, 
-            {}, 
-            function (err, numReplaced, upsert) {
+            repository.update(event.id, {
+                name: event.name,
+                modified: event.timestamp, 
+                version: event.version
+            }, 
+            function (err) {
                 callback(err);
             });
         }

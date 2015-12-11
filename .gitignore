@@ -9,6 +9,6 @@ bin/
 .ntvs_analysis.dat
 .vs/
 .vscode/
-dist/
+#dist/
 *.pubxml
 *.pubxml.user

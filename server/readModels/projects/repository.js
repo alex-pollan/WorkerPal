@@ -1,4 +1,4 @@
-﻿var Datastore = require('nedb');
+var Datastore = require('nedb');
 var _ = require("lodash");
 
 var Repository = function (config) {

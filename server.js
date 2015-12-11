@@ -1,12 +1,7 @@
-/**
- * Created by Alex on 9/21/2015.
- */
-
 var config = require('./server/config/config');
 var express = require('express');
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
-var authorize = require('./server/authorize');
 var _ = require('lodash');
 
 var app = express();
@@ -43,6 +38,6 @@ require('./server/api/login')(app);
 require('./server/api/projects')(app, projectsReadModelRepository);
 require('./server/capi/projects')(app, cqrsRuntime.bus);
 
-var server = app.listen(process.env.PORT, function () {    
+app.listen(process.env.PORT, function () {    
     console.log('App listening at http...');
 });

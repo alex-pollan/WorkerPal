@@ -8,7 +8,7 @@ var uglify = require('gulp-uglify');
 var minifyCss = require('gulp-minify-css');
 var sourcemaps = require('gulp-sourcemaps');
 var del = require('del');
-var vinylPaths = require('vinyl-paths');
+var gmocha = require('gulp-mocha');
 
 gulp.task('bower', function () {
     return bower('./bower_components');
@@ -45,6 +45,13 @@ gulp.task('test', function () {
         timeout: 10000
     }));
 });
+
+// gulp.task('test2', function () {
+//     return gulp.src(['spec/**/*spec.js']).pipe(gmocha({
+//         timeout: 10000
+//     }));
+// });
+
 
 gulp.task('clean-deploy', function (cb) {
     del(['deploy/**', '!deploy']).then(function () {

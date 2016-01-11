@@ -1,5 +1,12 @@
 {
-    "name": "cqrs",
-    "main": "./index",
-    "description": "CQRS"
+  "name": "cqrs",
+  "version": "0.0.1",
+  "main": "./index",
+  "description": "CQRS",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "should": "^8.1.1",
+    "sinon": "^1.17.2"
+  }
 }

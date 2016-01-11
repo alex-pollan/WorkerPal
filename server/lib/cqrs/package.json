@@ -1,0 +1,5 @@
+{
+    "name": "cqrs",
+    "main": "./index",
+    "description": "CQRS"
+}

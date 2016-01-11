@@ -1,4 +1,4 @@
-﻿var cqrs = require('./core');
+var cqrs = require('../cqrs');
 var async = require('async');
 
 var InMemoryBus = cqrs.Bus.extend(function (base) {
@@ -16,7 +16,7 @@ var InMemoryBus = cqrs.Bus.extend(function (base) {
         handleEvent: function (handler, event) {
             this.eventHandlerQueue.push({ handler: handler, event: event }, function (err) {
                 if (err) {
-                    console.error('Event ' + task.event.eventName + ' threw an error: ' + err);
+                    console.error('Event ' + event.eventName + ' threw an error: ' + err);
                     return;
                 }
                 //TODO: keep track of last event processed to reprocess at restart aggregate's events in case of error? 

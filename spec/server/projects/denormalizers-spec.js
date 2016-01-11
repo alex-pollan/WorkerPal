@@ -1,4 +1,4 @@
-﻿var projectDenormalizers = require('../../../server/readModels/projects/denormalizers');
+var projectDenormalizers = require('../../../server/readModels/projects/denormalizers');
 
 describe("Projects denormalizers", function () {    
     it("should handle project created", function (done) {

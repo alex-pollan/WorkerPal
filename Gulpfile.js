@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='test, uglifyJs' />
+/// <binding BeforeBuild='test, uglifyJs' />
 var gulp = require('gulp');
 var bower = require('gulp-bower');
 var concat = require('gulp-concat');

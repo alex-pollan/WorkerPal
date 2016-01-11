@@ -1,4 +1,4 @@
-﻿var Fiber = require('fiber');
+var Fiber = require('fiber');
 var Datastore = require('nedb');
 
 var EventStoreNedbRepository = Fiber.extend(function (base) {

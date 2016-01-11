@@ -2,10 +2,10 @@
  * Created by Alex on 10/5/2015.
  */
 
-var cqrs = require('./cqrs/core');
+var cqrs = require('./lib/cqrs');
 var config = require('./config/config');
-var inMemoryBus = require('./cqrs/in-memory-bus.js');
-var eventStoreNeDbRepository = require('./cqrs/event-store-nedb-repository');
+var inMemoryBus = require('./lib/cqrs-in-memory-bus');
+var eventStoreNeDbRepository = require('./lib/cqrs-event-store-nedb-repository');
 var projectDomain = require('./domain/projects/domain');
 var projectCommands = require('./domain/projects/commands');
 var projectDenormalizers = require('./readModels/projects/denormalizers');

@@ -1,4 +1,5 @@
-﻿var Fiber = require('fiber');
+var Fiber = require('fiber');
+var _ = require('lodash');
 
 var EventStoreInMemoryRepository = Fiber.extend(function (base) {
     return {

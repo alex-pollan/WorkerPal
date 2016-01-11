@@ -1,4 +1,7 @@
-﻿var cqrs = require('../../server/cqrs/core');
+var cqrs = require('../../cqrs');
+var expect = require('chai').expect;
+var assert = require('chai').assert;
+var spy = require('sinon').spy;
 
 describe("Aggregates repository", function () {
     it("should return AggregateNotFoundException error if aggregate doesnt exist", function (done) {
@@ -16,7 +19,7 @@ describe("Aggregates repository", function () {
         
         //act
         repository.getById('anyid', function (err, obj) {
-            expect(err.message).toEqual('AggregateNotFoundException');
+            expect(err.message).to.be.equal('AggregateNotFoundException');
             done();
         });
     });
@@ -31,7 +34,11 @@ describe("Aggregates repository", function () {
             }
         };
         
-        var aggregate = jasmine.createSpyObj('aggregate', ['loadsFromHistory']);
+        var aggregate = {
+            loadsFromHistory: function() {}
+        };
+        
+        spy(aggregate, 'loadsFromHistory');
 
         var repository = new cqrs.Repository(function () {
             return aggregate;
@@ -39,7 +46,7 @@ describe("Aggregates repository", function () {
 
         //act
         repository.getById('anyid', function (err, obj) { 
-            expect(aggregate.loadsFromHistory).toHaveBeenCalledWith(aggregateEvents);
+            assert(aggregate.loadsFromHistory.calledWith(aggregateEvents));
             done();
         });
     });

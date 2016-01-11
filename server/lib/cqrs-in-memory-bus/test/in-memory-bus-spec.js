@@ -1,4 +1,4 @@
-﻿var InMemoryBus = require('../../server/cqrs/in-memory-bus');
+var InMemoryBus = require('../in-memory-bus');
 
 describe("In memory bus", function () {
     it("should invoke command handler", function (done) {

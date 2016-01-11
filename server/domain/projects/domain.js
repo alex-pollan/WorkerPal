@@ -2,7 +2,7 @@
  * Created by Alex on 9/27/2015.
  */
 
-var cqrs = require('../../cqrs/core');
+var cqrs = require('../../lib/cqrs');
 var events = require('./events');
 
 var Project = cqrs.AggregateRoot.extend(function (base) {

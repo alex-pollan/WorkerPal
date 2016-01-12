@@ -1,5 +1,5 @@
-﻿var authorize = require('../authorize');
-var commands = require('../domain/projects/commands');
+var authorize = require('../authorize');
+var commands = require('../projects/domain/commands');
 
 module.exports = function ProjectsCommandsApi(app, bus) {
     app.put('/capi/projects', authorize, function (req, res, next) {

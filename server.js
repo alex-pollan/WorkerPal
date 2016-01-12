@@ -31,12 +31,8 @@ if (process.env.deployPath) {
     });
 }
 
-var projectsReadModelRepository = require('./server/readModels/projects/repository')(config); 
-var cqrsRuntime = require('./server/bootstrap')(projectsReadModelRepository); 
-
+require('./server/projects')(app); 
 require('./server/api/login')(app);
-require('./server/api/projects')(app, projectsReadModelRepository);
-require('./server/capi/projects')(app, cqrsRuntime.bus);
 
 app.listen(process.env.PORT, function () {    
     console.log('App listening at http...');

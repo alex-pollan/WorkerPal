@@ -1,8 +1,8 @@
 {
-  "name": "cqrs",
+  "name": "cqrs-in-memory-bus",
   "version": "0.0.1",
   "main": "./index",
-  "description": "CQRS",
+  "description": "CQRS In memory bus",
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.3.4",
@@ -10,8 +10,6 @@
     "sinon": "^1.17.2"
   },
   "dependencies": {
-    "async": "^1.5.2",
-    "fiber": "^1.0.4",
-    "lodash": "^3.10.1"
+    "async": "^1.5.2"
   }
 }

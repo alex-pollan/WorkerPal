@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='test, uglifyJs' />
+/// <binding uglifyJs' />
 var gulp = require('gulp');
 var bower = require('gulp-bower');
 var concat = require('gulp-concat');
@@ -40,11 +40,11 @@ gulp.task('minifyCss', function () {
         .pipe(gulp.dest('public/dist'));
 });
 
-gulp.task('test', function () {
-    return gulp.src(['spec/**/*spec.js']).pipe(jasminen({
-        timeout: 10000
-    }));
-});
+// gulp.task('test', function () {
+//     return gulp.src(['spec/**/*spec.js']).pipe(jasminen({
+//         timeout: 10000
+//     }));
+// });
 
 // gulp.task('test2', function () {
 //     return gulp.src(['spec/**/*spec.js']).pipe(gmocha({

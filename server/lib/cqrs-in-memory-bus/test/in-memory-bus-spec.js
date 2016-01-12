@@ -1,4 +1,6 @@
-var InMemoryBus = require('../in-memory-bus');
+var expect = require('chai').expect;
+var spy = require('sinon').spy;
+var InMemoryBus = require('../index');
 
 describe("In memory bus", function () {
     it("should invoke command handler", function (done) {
@@ -9,15 +11,15 @@ describe("In memory bus", function () {
                 callback();              
             }
         };
-        spyOn(commandHandler, 'handleCommand1').andCallThrough();       
+        spy(commandHandler, 'handleCommand1');       
         var command = { commandName: 'Command1' };                
         bus.registerHandlers(commandHandler);
         
         //act
         bus.send(command, function (err) {
             //assert
-            expect(err).toBe(undefined);
-            expect(commandHandler.handleCommand1.calls.length).toEqual(1); 
+            expect(err).to.be.undefined;
+            expect(commandHandler.handleCommand1.callCount).to.be.equal(1); 
             done();
         });
     });
@@ -30,17 +32,17 @@ describe("In memory bus", function () {
                 callback(new Error('Error1'));
             }
         };
-        spyOn(commandHandler, 'handleCommand1').andCallThrough();
+        spy(commandHandler, 'handleCommand1');
         var command = { commandName: 'Command1' };
         bus.registerHandlers(commandHandler);
         
         //act
         bus.send(command, function (err) {
             //assert
-            expect(err).not.toBe(undefined);
-            expect(err).not.toBe(null);
-            expect(err.message).toBe('Error1');
-            expect(commandHandler.handleCommand1.calls.length).toEqual(1);
+            expect(err).not.to.be.undefined;
+            expect(err).not.to.be.null;
+            expect(err.message).to.be.equal('Error1');
+            expect(commandHandler.handleCommand1.callCount).to.be.equal(1);
             done();
         });
     });

@@ -1,8 +1,8 @@
 {
-  "name": "cqrs-in-memory-bus",
+  "name": "workerpal-membership",
   "version": "0.0.1",
   "main": "./index",
-  "description": "CQRS In memory bus",
+  "description": "Workerpal membership module",
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.3.4",
@@ -10,6 +10,8 @@
     "sinon": "^1.17.2"
   },
   "dependencies": {
-    "async": "^1.5.2"
+    "bcrypt": "^0.8.5",
+    "events": "^1.1.0",
+    "mongoose": "^4.3.6"
   }
 }

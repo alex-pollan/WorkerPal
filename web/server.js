@@ -1,4 +1,4 @@
-var config = require('./server/config/config');
+var config = require('./config/config');
 var express = require('express');
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
@@ -31,8 +31,8 @@ if (process.env.deployPath) {
     });
 }
 
-require('./server/projects')(app); 
-require('./server/api/login')(app);
+require('../projects')(app); 
+require('../api/login')(app);
 
 app.listen(process.env.PORT, function () {    
     console.log('App listening at http...');

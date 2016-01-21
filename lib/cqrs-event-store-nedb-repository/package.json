@@ -1,5 +1,5 @@
 {
-  "name": "cqrs-event-store-nedb-repository",
+  "name": "@tapmiapp/cqrs-event-store-nedb-repository",
   "version": "0.0.1",
   "main": "./index",
   "description": "CQRS Event Store NeDb Repository",

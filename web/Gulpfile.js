@@ -11,17 +11,17 @@ var del = require('del');
 var gmocha = require('gulp-mocha');
 
 gulp.task('bower', function () {
-    return bower('./bower_components');
+    return bower({directory: './bower_components', cwd: './public'});
 });
 
 gulp.task('updateLibs', ['bower'], function () {
-    gulp.src(['bower_components/angular/angular*.js'])
+    gulp.src(['public/bower_components/angular/angular*.js'])
         .pipe(gulp.dest('public/dist/angular'));
-    gulp.src(['bower_components/angular-resource/angular*.js'])
+    gulp.src(['public/bower_components/angular-resource/angular*.js'])
         .pipe(gulp.dest('public/dist/angular'));    
-    gulp.src(['bower_components/angular-route/angular*.js'])
+    gulp.src(['public/bower_components/angular-route/angular*.js'])
         .pipe(gulp.dest('public/dist/angular'));
-    gulp.src(['bower_components/angular-ui-router/release/angular*.js'])
+    gulp.src(['public/bower_components/angular-ui-router/release/angular*.js'])
         .pipe(gulp.dest('public/dist/angular'));
 });
 
@@ -62,10 +62,8 @@ gulp.task('clean-deploy', function (cb) {
 gulp.task('deploy', ['clean-deploy', 'minifyCss', 'uglifyJs'], function () {
     gulp.src(['public/**/*.html','public/**/*.css', 'public/dist/**/*.min.js', 'public/dist/**/*.js.map'], {base: 'public'})
         .pipe(gulp.dest('deploy/public'));
-    gulp.src(['server/**/*.js'], { base: 'server' })
-        .pipe(gulp.dest('deploy/server'));
+    gulp.src(['web/**/*.js', 'web.config'], { base: 'web' })
+        .pipe(gulp.dest('deploy/web'));
     gulp.src(['node_modules/**/*.*'], { base: 'node_modules' })
         .pipe(gulp.dest('deploy/node_modules'));
-    gulp.src(['server.js', 'web.config'])
-        .pipe(gulp.dest('deploy'));
 });

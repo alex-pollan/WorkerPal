@@ -1,0 +1,17 @@
+{
+  "name": "@tapmiapp/cqrs",
+  "version": "0.0.1",
+  "main": "./index",
+  "description": "CQRS",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "should": "^8.1.1",
+    "sinon": "^1.17.2"
+  },
+  "dependencies": {
+    "async": "^1.5.2",
+    "fiber": "^1.0.4",
+    "lodash": "^3.10.1"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "cqrs-event-store-in-memory-repository",
+  "name": "@tapmiapp/cqrs-event-store-in-memory-repository",
   "version": "0.0.1",
   "main": "./index",
   "description": "CQRS Event Store In Memory Repository",

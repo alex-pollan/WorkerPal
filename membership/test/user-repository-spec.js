@@ -64,8 +64,7 @@ describe("User repository", function(){
         
         it("is updated", function(done){
             user.name = "updated name";
-            user.password = "updated password";
-            
+
             userRepository.update(user, function(err){
                expect(err).to.be.null;
                done();

@@ -1,17 +1,21 @@
 var chai = require("chai");
 var expect = chai.expect;
 var assert = chai.assert;
+var spy = require("sinon").spy;
 var User = require("../models/User");
 var UserRepository = require("../UserRepository");
 var Authentication = require("../Authentication");
 var mongoose = require("mongoose");
+var Logger = require("../Logger");
 
 describe("Authentication", function(){
 
     var db;
+    var logger;
     var userRepository;
     var authentication;
     var user = new User({id: "id", name: "user@mail.com", password: "pswd"});
+    var testStartedAt = new Date();
     
     before(function(done){
         mongoose.connect("mongodb://localhost/test");
@@ -24,18 +28,35 @@ describe("Authentication", function(){
         
         db.once('open', function() {
             userRepository = UserRepository(db);
-            authentication = new Authentication(userRepository);
+            logger = new Logger(db);
+            authentication = new Authentication(userRepository, logger);
+
+            spy(logger, "log");
             
-            userRepository.removeAll(function(err){
-                if (err) {
-                    assert(false);
-                    return;
-                }
-                done();                
-            });
+            done();
         });
     });
     
+    before(function(done){
+        userRepository.removeAll(function(err){
+            if (err) {
+                assert(false);
+                return;
+            }
+            done();                
+        });
+    });
+    
+    before(function(done){
+        logger.removeAll(function(err){
+            if (err) {
+                assert(false);
+                return;
+            }
+            done();                
+        });
+    });
+
     before(function(done){
         userRepository.create(user, function(err, createdUser){
             if (err) {
@@ -46,7 +67,7 @@ describe("Authentication", function(){
             done();                
         });
     });
-
+    
     after(function(done){
        db.close(function(){
            done();
@@ -67,14 +88,25 @@ describe("Authentication", function(){
         });
         
         it("returns a user", function(){
-            expect(authenticatedUser).not.to.be.null;
+            expect(authenticatedUser).to.not.be.null;
             expect(authenticatedUser.id).to.be.equal(user.id);
             expect(authenticatedUser.name).to.be.equal(user.name);
         });
         
-        it("creates a log entry");
-        it("update the user stats");
-        it("update the signon dates");
+        it("creates a log entry", function() {
+            assert(logger.log.calledOnce);
+        });
+        
+        it("update the user stats", function() {
+            expect(authenticatedUser.loginCount).to.not.be.undefined;
+            expect(authenticatedUser.loginCount).to.be.equal(1);
+        });
+        
+        it("update the signon dates", function(){
+            expect(authenticatedUser.lastLoginDateTime).to.not.be.undefined;    
+            expect(authenticatedUser.lastLoginDateTime.getTime()).to.be.above(testStartedAt.getTime());
+            expect(authenticatedUser.lastLoginDateTime.getTime()).to.be.below(new Date().getTime());
+        });
         
     });
 

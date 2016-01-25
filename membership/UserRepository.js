@@ -1,5 +1,6 @@
 var User = require("./models/User");
 var bcrypt = require('bcrypt');
+var _ = require("lodash");
 
 var UserRepository = function(db) {
     
@@ -62,27 +63,19 @@ var UserRepository = function(db) {
     };
 
     var update = function(user, cb){
-         hashPassword(user.password, function(err, hash){
-            if (err) {
-                cb(err);
-                return;
-            }
-
-            var plainPassword = user.password;
-            user.password = hash;
-            
-            Model.findOneAndUpdate({id: user.id}, user, function(err, updatedUser){
-                user.password = plainPassword;
-                cb(err, updatedUser);
-            });
-        });        
+        var doc = {};
+        _.assign(doc, user);
+        delete doc.password;
+        Model.findOneAndUpdate({id: user.id}, {$set: doc}, function(err, updatedUser){
+            cb(err, updatedUser);
+        });
     };
     
     var removeAll = function(cb){
         Model.remove({}, function(err){
             cb(err);
         });
-    }
+    };
     
     return {
         create: create,

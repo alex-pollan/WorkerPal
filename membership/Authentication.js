@@ -2,20 +2,15 @@ const EventEmitter = require('events');
 var assert = require("assert");
 const util = require('util');
 
-var Authentication = function(userRepository) {
+var Authentication = function(userRepository, logger) {
     assert(userRepository != null);
+    assert(logger != null);
 
     var _this = this;
 
     var continueWith = null;
     
     EventEmitter.call(this);
-
-    //find user
-    //check password
-    //save login information (lastTime, count, etc)
-    //log
-    //return user
 
     var authenticate = function(userName, password, cb) {
         continueWith = cb;
@@ -54,21 +49,54 @@ var Authentication = function(userRepository) {
         });
     };
     
-    var setUser = function(user) {
-        _this.emit('authenticated', user);
-        continueWith(null, user);
-    };
-    
     var notifyInvalidPassword = function() {
         _this.emit('not-authenticated');
         continueWith(new Error('Invalid password'));
     };
 
+    var updateStats = function(user) {
+        user.lastLoginDateTime = new Date();
+        user.loginCount = user.loginCount + 1;
+        
+        userRepository.update(user, function(err, updated) {
+            if (err) {
+                _this.emit('stats-update-ko', err);
+                return;
+            }
+            
+            _this.emit('stats-update-ok', user);  
+        });
+    };
+
+    var log = function(user) {
+        logger.log('User authenticated', user, function(err) {
+            if (err) {
+                _this.emit('log-ko', err);
+                return;
+            }
+            _this.emit('log-ok', user);
+        });
+    };
+
+    var authenticated = function(user) {
+        _this.emit('authenticated', user);
+        continueWith(null, user);
+    };
+    
+    var notifyAuthenticationError = function(err) {
+        _this.emit('not-authenticated', err);
+        continueWith(err);
+    };
+    
     _this.on('authentication-start', findUser)
     _this.on('username-ko', notifyUserNotFound);
     _this.on('username-ok', verifyPassword);
-    _this.on('password-ok', setUser);
+    _this.on('password-ok', updateStats);
     _this.on('password-ko', notifyInvalidPassword);
+    _this.on('stats-update-ok', log);
+    _this.on('stats-update-ko', notifyAuthenticationError);
+    _this.on('log-ok', authenticated);
+    _this.on('log-ko', notifyAuthenticationError);
 
     return {
         authenticate: authenticate

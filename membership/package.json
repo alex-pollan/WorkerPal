@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "main": "./index",
   "description": "Workerpal membership module",
+  "private": true,
+  "licence": "UNLICENSED",
   "devDependencies": {
     "chai": "^3.4.1",
-    "mocha": "^2.3.4",
     "should": "^8.1.1",
     "sinon": "^1.17.2"
   },

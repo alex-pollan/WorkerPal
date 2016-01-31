@@ -12,3 +12,4 @@ bin/
 #dist/
 *.pubxml
 *.pubxml.user
+coverage/

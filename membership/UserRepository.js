@@ -50,12 +50,6 @@ var UserRepository = function(db) {
         });
     };
     
-    var read = function(id, cb){
-        Model.findOne({id: id}, function(err, user){
-            cb(err, user);
-        });
-    };
-    
     var readByUserName = function(userName, cb){
         Model.findOne({name: userName}, function(err, user){
             cb(err, user);
@@ -79,7 +73,6 @@ var UserRepository = function(db) {
     
     return {
         create: create,
-        read: read,
         readByUserName: readByUserName,
         update: update,
         removeAll: removeAll,

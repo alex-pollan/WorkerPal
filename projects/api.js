@@ -1,5 +1,4 @@
 var authorize = require('../authorize');
-var Datastore = require('nedb');
 
 module.exports = function ProjectsApi(app, repository) {
 
@@ -9,7 +8,7 @@ module.exports = function ProjectsApi(app, repository) {
                 console.log('ProjectsApi: Error: ' + err);
                 res.sendStatus(500);
                 return;
-            };
+            }
             
             res.send(doc);
         });   
@@ -21,7 +20,7 @@ module.exports = function ProjectsApi(app, repository) {
                 console.log('ProjectsApi: Error: ' + err);
                 res.sendStatus(500);
                 return;
-            };
+            }
             
             res.send(docs);
         });        

@@ -1,0 +1,11 @@
+{
+  "name": "@tapmiapp/cqrs-event-store-mongodb-repository",
+  "version": "0.0.1",
+  "main": "./index",
+  "description": "CQRS Event Store Mongodb Repository",
+  "devDependencies": {},
+  "dependencies": {
+    "fiber": "^1.0.4",
+    "mongoose": "^4.3.7"
+  }
+}

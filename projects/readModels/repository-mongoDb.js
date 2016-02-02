@@ -1,9 +1,7 @@
-var Datastore = require('nedb');
+var mongoose = require('mongoose');
 var _ = require("lodash");
 
-var Repository = function (config) {
-    var db = new Datastore({ filename: config.nedb.readModel, autoload: true });
-
+var Repository = function (db) {
     return {
         upsert: function (id, project, callback) {
             db.update({ $and : [{ type: 'project', id: id }] }, _.merge(project, { type: 'project'}), { upsert: true }, 

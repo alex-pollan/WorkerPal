@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
 var _ = require('lodash');
+var mongoose = require("mongoose");
 
 var app = express();
 app.use(express.static('public'));
@@ -31,9 +32,20 @@ if (process.env.deployPath) {
     });
 }
 
-require('../projects')(app); 
-require('../api/login')(app);
-
-app.listen(process.env.PORT, function () {    
-    console.log('App listening at http...');
+mongoose.connect("mongodb://localhost/test");
+        
+var db = mongoose.connection;
+        
+db.on('error', function(err){
+    console.log('Couldn\'t open db connection...' + err);
 });
+
+db.once('open', function() {
+    require('../projects')(app, db); 
+    require('./login')(app, db);
+    
+    app.listen(process.env.PORT, function () {    
+        console.log('App listening at http...');
+    });
+});
+

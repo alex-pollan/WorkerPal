@@ -1,10 +1,14 @@
 const EventEmitter = require("events");
-var assert = require("assert");
 const util = require("util");
+var assert = require("assert");
+var Logger = require("./logger");
+var UserData = require("./user-data");
 
-var Authentication = function(userRepository, logger) {
-    assert(userRepository != null);
-    assert(logger != null);
+var Authentication = function(db) {
+    assert(db != null);
+
+    var logger = Logger(db);
+    var userData = UserData(db);
 
     var AuthenticationFailedMessage = "Invalid login";
 
@@ -21,7 +25,7 @@ var Authentication = function(userRepository, logger) {
     };
     
     var findUser = function(userName, password) {
-        userRepository.readByUserName(userName, function(err, user){
+        userData.readByUserName(userName, function(err, user){
             if (err) {
                 _this.emit("username-ko");
                 return;
@@ -42,7 +46,7 @@ var Authentication = function(userRepository, logger) {
     };
     
     var verifyPassword = function(user, password) {
-        userRepository.verifyPassword(password, user.password, function(err, verified){
+        userData.verifyPassword(password, user.password, function(err, verified){
             if (err) {
                 _this.emit("password-ko");
                 return;
@@ -64,9 +68,9 @@ var Authentication = function(userRepository, logger) {
 
     var updateStats = function(user) {
         user.lastLoginDateTime = new Date();
-        user.loginCount = user.loginCount + 1;
+        user.loginCount = (user.loginCount || 0) + 1;
         
-        userRepository.update(user, function(err, updated) {
+        userData.update(user, function(err, updated) {
             if (err) {
                 _this.emit("stats-update-ko", err);
                 return;
@@ -107,6 +111,7 @@ var Authentication = function(userRepository, logger) {
     _this.on("log-ko", notifyAuthenticationError);
 
     return {
+        logger: logger,
         authenticate: authenticate
     };
 };

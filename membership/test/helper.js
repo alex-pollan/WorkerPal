@@ -1,16 +1,16 @@
 var mongoose = require("mongoose");
-var UserRepository = require("../UserRepository");
-var Logger = require("../Logger");
+var UserData = require("../user-data");
+var Logger = require("../logger");
 
 var Helper = function() {
-    var db;
+    var db,
+        userData,
+        logger;
     
     var api = {
-        userRepository: null,
-        logger: null,
         connect: null,
-        createTestUser: null,
-        disconnect: null
+        disconnect: null,
+        seed: null
     };
     
     api.connect = function(cb){
@@ -24,35 +24,36 @@ var Helper = function() {
         });
         
         db.once('open', function() {
-            api.logger = new Logger(db);
-            api.userRepository = UserRepository(db);
-            
-            api.logger.removeAll(function(err){
+            userData = UserData(db);
+            logger = Logger(db);
+
+            userData.removeAll(function(err){
                 if (err) {
                     cb(err);
                     return;
                 }
                 
-                cb(null, db);
-            });
-        });
-    };
-    
-    api.createTestUser = function(user, cb) {
-        api.userRepository.removeAll(function(err){
-            if (err) {
-                cb(err);
-                return;
-            }
-            
-            api.userRepository.create(user, function(err, createdUser){
-                cb(err, createdUser);
+                logger.removeAll(function(err){
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+                    
+                    cb(null, db);
+                });
             });
         });
     };
     
     api.disconnect = function(cb){
         db.close(function(err){
+            cb(err);
+        });
+    };
+    
+    api.seed = function(cb) {
+        var user = {id: "id", name: "user@mail.com", password: "pswd", email: "user@mail.com"};
+        userData.create(user, function(err){
             cb(err);
         });
     };

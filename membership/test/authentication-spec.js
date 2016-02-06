@@ -2,14 +2,12 @@ var chai = require("chai");
 var expect = chai.expect;
 var assert = chai.assert;
 var spy = require("sinon").spy;
-var User = require("../models/User");
-var Authentication = require("../Authentication");
+var Authentication = require("../authentication");
 var helper = require("./helper");
 
 describe("Authentication", function(){
 
     var authentication;
-    var user = new User({id: "id", name: "user@mail.com", password: "pswd"});
     var testStartedAt = new Date();
     
     before(function(done){
@@ -18,16 +16,16 @@ describe("Authentication", function(){
                 return;
             }
             
-            authentication = new Authentication(helper.userRepository, helper.logger);
+            authentication = new Authentication(db);
 
-            spy(helper.logger, "log");
+            spy(authentication.logger, "log");
 
             done();
         });
     });
     
     before(function(done){
-        helper.createTestUser(user, function(err, createdUser) {
+        helper.seed(function(err, createdUser) {
             if (err) {
                 assert(false);
                 return;
@@ -57,17 +55,16 @@ describe("Authentication", function(){
         
         it("returns a user", function(){
             expect(authenticatedUser).to.not.be.null;
-            expect(authenticatedUser.id).to.be.equal(user.id);
-            expect(authenticatedUser.name).to.be.equal(user.name);
+            expect(authenticatedUser.id).to.not.be.empty;
+            expect(authenticatedUser.name).to.equal("user@mail.com");
         });
         
         it("creates a log entry", function() {
-            assert(helper.logger.log.calledOnce);
+            assert(authentication.logger.log.calledOnce);
         });
         
         it("update the user stats", function() {
-            expect(authenticatedUser.loginCount).to.not.be.undefined;
-            expect(authenticatedUser.loginCount).to.be.equal(1);
+            expect(authenticatedUser.loginCount).to.equal(1);
         });
         
         it("update the signon dates", function(){

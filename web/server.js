@@ -42,7 +42,7 @@ db.on('error', function(err){
 
 db.once('open', function() {
     require('../projects')(app, db); 
-    require('./login')(app, db);
+    require('../membership')(app, db);
     
     app.listen(process.env.PORT, function () {    
         console.log('App listening at http...');

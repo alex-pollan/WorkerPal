@@ -1,11 +1,9 @@
-var User = require("./models/User");
+var Model = require("./models/User");
 var bcrypt = require('bcrypt');
 var _ = require("lodash");
 
 var UserRepository = function(db) {
-    
-    var Model = User.Model;
-    
+
     var create = function(user, cb) {
         hashPassword(user.password, function(err, hash){
             if (err) {

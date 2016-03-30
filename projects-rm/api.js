@@ -1,6 +1,4 @@
-var authorize = require('../authorize');
-
-module.exports = function ProjectsApi(app, repository) {
+module.exports = function ProjectsApi(app, authorize, repository) {
 
     app.get('/api/projects/:projectId', authorize, function (req, res) {
         repository.get(req.params.projectId, req.user.id, function (err, doc) {

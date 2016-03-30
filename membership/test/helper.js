@@ -7,13 +7,13 @@ var Helper = function() {
         userData,
         logger;
     
-    var api = {
-        connect: null,
-        disconnect: null,
-        seed: null
+    return {
+        connect: connect,
+        disconnect: disconnect,
+        seed: seed
     };
     
-    api.connect = function(cb){
+    function connect(cb){
         mongoose.connect("mongodb://localhost/test");
         
         db = mongoose.connection;
@@ -45,20 +45,18 @@ var Helper = function() {
         });
     };
     
-    api.disconnect = function(cb){
+    function disconnect(cb){
         db.close(function(err){
             cb(err);
         });
     };
     
-    api.seed = function(cb) {
+    function seed(cb) {
         var user = {id: "id", name: "user@mail.com", password: "pswd", email: "user@mail.com"};
         userData.create(user, function(err){
             cb(err);
         });
     };
-    
-    return api;
 };
 
 module.exports = new Helper();

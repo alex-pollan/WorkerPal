@@ -6,7 +6,7 @@ var _ = require('lodash');
 var mongoose = require("mongoose");
 
 var app = express();
-app.use(express.static('public'));
+app.use(express.static('../public'));
 app.use(bodyParser.json());
 app.use(jwt({
     secret: config.jwtSecretToken,
@@ -41,7 +41,11 @@ db.on('error', function(err){
 });
 
 db.once('open', function() {
-    require('../projects')(app, db); 
+    var authorize = require('./authorize');
+    var eventStoreMongoDbRepository = require('../lib/cqrs-event-store-mongodb-repository');
+    
+    var bus = require('../projects')(app, authorize, new eventStoreMongoDbRepository.EventStoreRepository(db));
+    require('../projects-rm')(app, authorize, db, bus); 
     require('../membership')(app, db);
     
     app.listen(process.env.PORT, function () {    

@@ -1,7 +1,6 @@
-var authorize = require('../authorize');
 var commands = require('../projects/domain/commands');
 
-module.exports = function ProjectsCommandsApi(app, bus) {
+module.exports = function ProjectsCommandsApi(app, authorize, bus) {
     app.put('/capi/projects', authorize, function (req, res, next) {
         bus.send(new commands.Commands.CreateProject(req.body.id, req.body.name, req.body.description, req.user.id), function (err) {
             if (err) {

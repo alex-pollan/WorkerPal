@@ -1,6 +1,6 @@
 var service = require("./service");
-var authentication = require("./authentication");
+var Authentication = require("./authentication");
 
 module.exports = function(app, db) {
-    return service({app: app, auth: authentication(db)});
+    return service({app: app, auth: new Authentication(db)});
 };

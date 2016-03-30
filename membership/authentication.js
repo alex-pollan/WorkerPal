@@ -16,7 +16,7 @@ var Authentication = function(db) {
 
     var continueWith = null;
     
-    EventEmitter.call(this);
+    EventEmitter.call(_this);
 
     var authenticate = function(userName, password, cb) {
         continueWith = cb;

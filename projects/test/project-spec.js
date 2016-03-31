@@ -80,5 +80,60 @@ describe('Project aggregate root', function() {
         });
         
     });
+    
+    describe('create project with no id', function() {
+
+        it('throws error', function(){
+            var sendInvalidCommand = function (){
+                bus.send(new commands.Commands.CreateProject(null, name, description, userId));
+            };
+            
+            expect(sendInvalidCommand).to.throw();
+        });
+        
+    });
+
+    describe('create project with no name', function() {
+
+        it('returns error', function(done){
+            bus.send(new commands.Commands.CreateProject(id, null, description, userId), function (err) {
+                expect(err).to.not.be.null;
+                done();
+            });
+        });
+        
+    });
+    
+    describe('create project with no userId', function() {
+
+        it('returns error', function(done){
+            bus.send(new commands.Commands.CreateProject(id, name, description, null), function (err) {
+                expect(err).to.not.be.null;
+                done();
+            });
+        });
+        
+    });
 
 });
+
+var CqrsTestframework = function() {
+    
+    var api = {
+        exception: null,
+        error: null,
+        events: null,
+        given: given,
+        when: when
+    };
+    
+    return api;
+    
+    function given(events) {
+            
+    }
+    
+    function when(events) {
+            
+    }
+};

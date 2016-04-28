@@ -2,8 +2,8 @@ var chai = require("chai");
 var expect = chai.expect;
 var assert = chai.assert;
 var spy = require("sinon").spy;
-var commands = require('../domain/commands');
-var events  = require('../domain/events');
+var commands = require('../../projects-commands');
+var events  = require('../../projects-events');
 var eventStoreInMemoryRepository = require('../../lib/cqrs-event-store-in-memory-repository');
 
 var app = {

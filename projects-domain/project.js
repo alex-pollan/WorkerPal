@@ -1,9 +1,5 @@
-/**
- * Created by Alex on 9/27/2015.
- */
-
-var cqrs = require('../../lib/cqrs');
-var events = require('./events');
+var cqrs = require('../lib/cqrs');
+var events = require('../projects-events');
 
 var Project = cqrs.AggregateRoot.extend(function (base) {
     return {       
@@ -31,6 +27,4 @@ var Project = cqrs.AggregateRoot.extend(function (base) {
     };
 });
 
-module.exports = {
-    Project: Project
-};
+module.exports = Project;

@@ -2,32 +2,7 @@
  * Created by Alex on 10/5/2015.
  */
 
-var domain = require('./domain');
-
-var CreateProject = function(id, name, description, userId) {
-    if (!id) throw new Error('Id expected');
-
-    return {
-        commandName: CreateProject.prototype.commandName,
-        id: id,
-        name: name,
-        description: description, 
-        userId: userId        
-    };
-};
-CreateProject.prototype.commandName = 'CreateProject';
-
-var ChangeName = function (id, name, expectedVersion) {
-    if (!id) throw new Error('Id expected');
-    
-    return {
-        commandName: ChangeName.prototype.commandName,
-        id: id,
-        name: name,
-        expectedVersion: expectedVersion
-    };
-};
-ChangeName.prototype.commandName = 'ProjectChangeName';
+var domain = require('../../projects-domain');
 
 var CommandHandlers = function(repository) {
     return  {
@@ -53,10 +28,5 @@ var CommandHandlers = function(repository) {
         }
     };
 };
-module.exports = {
-    CommandHandlers: CommandHandlers,
-    Commands: {
-        CreateProject: CreateProject,
-        ChangeName: ChangeName
-    }
-};
+
+module.exports = CommandHandlers;

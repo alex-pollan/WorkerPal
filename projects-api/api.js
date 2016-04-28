@@ -1,4 +1,4 @@
-var commands = require('../projects/domain/commands');
+var commands = require('../projects-commands');
 
 module.exports = function ProjectsCommandsApi(app, authorize, bus) {
     app.put('/capi/projects', authorize, function (req, res, next) {

@@ -1,13 +1,16 @@
 {
-  "name": "workerpal-projects-api",
+  "name": "workerpal-projects-cmd",
   "version": "0.0.1",
   "main": "./index",
-  "description": "workerpal projects module",
+  "description": "workerpal projects command module",
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.3.4",
     "should": "^8.1.1",
-    "sinon": "^1.17.2"
+    "sinon": "^1.17.2",
+    "gulp": "^3.9.1",
+    "gulp-istanbul": "^0.10.4",
+    "gulp-mocha": "^2.2.0"
   },
   "dependencies": {
     "fiber": "^1.0.4",

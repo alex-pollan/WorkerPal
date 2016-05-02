@@ -5,6 +5,9 @@
   "description": "workerpal projects domain module",
   "devDependencies": {
     "chai": "^3.4.1",
+    "gulp": "^3.9.1",
+    "gulp-istanbul": "^0.10.4",
+    "gulp-mocha": "^2.2.0",
     "should": "^8.1.1",
     "sinon": "^1.17.2"
   },

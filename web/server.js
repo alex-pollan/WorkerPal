@@ -23,8 +23,8 @@ app.use(jwt({
 
 if (process.env.deployPath) {
     app.all('*', function (req, res, next) {
-        if (_.startsWith(req.url, process.env.deployPath + '/api')
-            || _.startsWith(req.url, process.env.deployPath + '/capi')) {
+        if (_.startsWith(req.url, process.env.deployPath + '/api/query')
+            || _.startsWith(req.url, process.env.deployPath + '/api/cmd')) {
             req.url = req.url.replace(process.env.deployPath, '');
         }
 
@@ -44,8 +44,8 @@ db.once('open', function() {
     var authorize = require('./authorize');
     var eventStoreMongoDbRepository = require('../lib/cqrs-event-store-mongodb-repository');
     
-    var bus = require('../projects')(app, authorize, new eventStoreMongoDbRepository.EventStoreRepository(db));
-    require('../projects-rm')(app, authorize, db, bus); 
+    var bus = require('../projects-cmd')(app, authorize, new eventStoreMongoDbRepository.EventStoreRepository(db));
+    require('../projects-query')(app, authorize, db, bus); 
     require('../membership')(app, db);
     
     app.listen(process.env.PORT, function () {    

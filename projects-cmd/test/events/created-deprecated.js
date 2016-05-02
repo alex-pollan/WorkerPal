@@ -1,4 +1,4 @@
-var ProjectCreated = require('../index').ProjectCreated;
+var ProjectCreated = require('../../src/events').ProjectCreated;
 var expect = require('chai').expect;
 
 describe('project created event', function(){

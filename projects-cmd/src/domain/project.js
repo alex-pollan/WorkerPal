@@ -1,5 +1,5 @@
-var cqrs = require('../lib/cqrs');
-var events = require('../projects-events');
+var cqrs = require('../../../lib/cqrs');
+var events = require('../events');
 
 var Project = cqrs.AggregateRoot.extend(function (base) {
     return {       

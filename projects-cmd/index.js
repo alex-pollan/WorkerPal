@@ -1,7 +1,7 @@
 var cqrs = require('../lib/cqrs');
 var inMemoryBus = require('../lib/cqrs-in-memory-bus');
-var projectDomain = require('../projects-domain');
-var projectCommands = require('../projects-commands');
+var projectDomain = require('./src/domain');
+var projectCommands = require('./src/commands');
 
 module.exports = function(app, authorize, eventStoreRepository) {
     var bus = new inMemoryBus.Bus();
@@ -9,7 +9,7 @@ module.exports = function(app, authorize, eventStoreRepository) {
     var projectRepository = new cqrs.Repository(function () { return new projectDomain.Project(); }, eventStore);
     bus.registerHandlers(new projectCommands.CommandHandlers(projectRepository));
 
-    require('./api')(app, authorize, bus);
+    require('./src/api')(app, authorize, bus);
     
     return bus;
 };

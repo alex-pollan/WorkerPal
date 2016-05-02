@@ -2,7 +2,7 @@
  * Created by Alex on 10/5/2015.
  */
 
-var domain = require('../../projects-domain');
+var domain = require('../domain');
 
 var CommandHandlers = function(repository) {
     return  {

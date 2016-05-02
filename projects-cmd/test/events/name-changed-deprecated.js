@@ -1,4 +1,4 @@
-var ProjectNameChanged = require('../index').ProjectNameChanged;
+var ProjectNameChanged = require('../../src/events').ProjectNameChanged;
 var expect = require('chai').expect;
 
 describe('project name changed event', function(){

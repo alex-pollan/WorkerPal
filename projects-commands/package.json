@@ -2,7 +2,7 @@
   "name": "workerpal-projects-commands",
   "version": "0.0.1",
   "main": "./index",
-  "description": "workerpal projects commands module",
+  "description": "workerpal projects commands definition and handling module",
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.3.4",

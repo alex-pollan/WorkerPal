@@ -1,4 +1,4 @@
-var UserData = require("../user-data");
+var UserData = require("../src/user-data");
 var helper = require("./helper");
 
 var expect = require("chai").expect;

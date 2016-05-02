@@ -4,9 +4,11 @@ var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
 var _ = require('lodash');
 var mongoose = require("mongoose");
+var membership = require('../membership');
 
 var app = express();
-app.use(express.static('../public'));
+console.log(__dirname);
+app.use(express.static(__dirname + '/../public'));
 app.use(bodyParser.json());
 app.use(jwt({
     secret: config.jwtSecretToken,
@@ -46,9 +48,15 @@ db.once('open', function() {
     
     var bus = require('../projects-cmd')(app, authorize, new eventStoreMongoDbRepository.EventStoreRepository(db));
     require('../projects-query')(app, authorize, db, bus); 
-    require('../membership')(app, db);
+    membership.init(app, db);
     
-    app.listen(process.env.PORT, function () {    
-        console.log('App listening at http...');
+    membership.seed(db, function(err){
+        
+    });
+    
+    var port = process.env.PORT || 3000;
+    
+    app.listen(port, function () {
+        console.log('App listening at http port ' + port + '...');
     });
 });

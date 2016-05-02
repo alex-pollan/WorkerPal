@@ -2,7 +2,7 @@ var chai = require("chai");
 var expect = chai.expect;
 var assert = chai.assert;
 var spy = require("sinon").spy;
-var Authentication = require("../authentication");
+var Authentication = require("../src/authentication");
 var helper = require("./helper");
 
 describe("Authentication", function(){

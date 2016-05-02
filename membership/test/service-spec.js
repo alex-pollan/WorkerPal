@@ -1,7 +1,7 @@
 var expect = require("chai").expect;
 var request = require("supertest");
 var express = require("express");
-var service = require("../service");
+var service = require("../src/service");
 
 describe("Authentication service", function(){
     var response;

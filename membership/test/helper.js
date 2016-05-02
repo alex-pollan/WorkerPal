@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
-var UserData = require("../user-data");
-var Logger = require("../logger");
+var UserData = require("../src/user-data");
+var Logger = require("../src/logger");
 
 var Helper = function() {
     var db,

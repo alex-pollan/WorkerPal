@@ -1,4 +1,4 @@
-var cqrs = require('../../../lib/cqrs');
+var cqrs = require('@tapmiapp/cqrs');
 var events = require('../events');
 
 var Project = cqrs.AggregateRoot.extend(function (base) {

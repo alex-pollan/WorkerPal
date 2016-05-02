@@ -1,5 +1,5 @@
-var cqrs = require('../lib/cqrs');
-var inMemoryBus = require('../lib/cqrs-in-memory-bus');
+var cqrs = require('@tapmiapp/cqrs');
+var inMemoryBus = require('@tapmiapp/cqrs-in-memory-bus');
 var projectDomain = require('./src/domain');
 var projectCommands = require('./src/commands');
 

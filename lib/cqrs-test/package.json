@@ -1,0 +1,12 @@
+{
+  "name": "@tapmiapp/cqrs-test",
+  "version": "0.0.1",
+  "main": "./index",
+  "description": "CQRS test support module",
+  "devDependencies": {
+    "sinon": "^1.17.2"
+  },
+  "dependencies": {
+    
+  }
+}

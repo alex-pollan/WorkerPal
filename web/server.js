@@ -42,7 +42,7 @@ db.on('error', function(err){
 
 db.once('open', function() {
     var authorize = require('./authorize');
-    var eventStoreMongoDbRepository = require('../lib/cqrs-event-store-mongodb-repository');
+    var eventStoreMongoDbRepository = require('@tapmiapp/cqrs-event-store-mongodb-repository');
     
     var bus = require('../projects-cmd')(app, authorize, new eventStoreMongoDbRepository.EventStoreRepository(db));
     require('../projects-query')(app, authorize, db, bus); 
@@ -52,4 +52,3 @@ db.once('open', function() {
         console.log('App listening at http...');
     });
 });
-

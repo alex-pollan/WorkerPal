@@ -5,7 +5,7 @@ var spy = require("sinon").spy;
 var events = require('../src/events');
 var domain = require('../src/domain');
 var commands = require('../src/commands');
-var cqrsTest = require('./cqrs-test-framework');
+var cqrsTest = require('@tapmiapp/cqrs-test');
 
 describe('Project aggregate root', function () {
 

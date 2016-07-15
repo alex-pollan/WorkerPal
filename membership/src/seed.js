@@ -1,14 +1,21 @@
-var UserData = require("./user-data");
+var UserRepository = require("./user-data");
+//var async = require('async');
 
 var seed = function(db, done){
-    userData = UserData(db);
+    var userRepo = UserRepository(db);
+  
+    var user = [
+        {
+            id: '1',
+            name: 'alex',
+            email: 'alexpollan@yahoo.com',
+            password: 'alex'
+        }
+    ]; 
     
-    //TODO: set of users
-    var user = {}; 
-    
-    userData.create(user, function(err){
-        cb(err);
-    });  
+    userRepo.create(user, function(err){
+        done(err);
+    });
 };
 
 module.exports = seed; 
